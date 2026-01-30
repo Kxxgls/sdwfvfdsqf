@@ -30,7 +30,7 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.7;
-            overflow-x: hidden;
+            overflow-x: hidden; /* لمنع التمرير الأفقي */
         }
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         ul { list-style: none; }
@@ -47,18 +47,19 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            height: 80px;
         }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 90px; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 100%; }
         
         .logo {
-            font-size: 1.8rem; font-weight: 900; color: var(--primary-green);
+            font-size: 1.5rem; font-weight: 900; color: var(--primary-green);
             display: flex; align-items: center; gap: 10px;
         }
         .logo span { color: var(--primary-red); }
         .logo i { animation: spin-slow 10s linear infinite; }
 
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); position: relative; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-weight: 700; font-size: 1rem; color: var(--text-dark); position: relative; }
         .nav-links a::after {
             content: ''; position: absolute; width: 0; height: 3px; bottom: -5px; right: 0;
             background: linear-gradient(90deg, var(--primary-green), var(--primary-red)); transition: var(--transition);
@@ -68,8 +69,9 @@
 
         .cta-btn {
             background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-            color: #ffffff; padding: 12px 30px; border-radius: 50px;
+            color: #ffffff; padding: 10px 25px; border-radius: 50px;
             font-weight: 800; border: 2px solid transparent;
+            font-size: 0.9rem;
         }
         .cta-btn:hover {
             background: #ffffff; color: var(--primary-green); border-color: var(--primary-green);
@@ -82,37 +84,40 @@
             background: linear-gradient(rgba(0, 20, 10, 0.8), rgba(0, 20, 10, 0.9)),
                         url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat fixed;
             display: flex; align-items: center; text-align: center; color: #ffffff;
+            padding-top: 80px;
         }
         .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 0 20px; }
         .hero h1 {
-            font-size: 4rem; font-weight: 900; margin-bottom: 20px;
+            font-size: 3.5rem; font-weight: 900; margin-bottom: 20px;
             text-shadow: 0 10px 30px rgba(0,0,0,0.5);
             background: linear-gradient(to right, #fff, #ddd);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
         .btn-hero {
-            padding: 15px 40px; font-size: 1.2rem; border-radius: 50px;
+            padding: 12px 35px; font-size: 1rem; border-radius: 50px;
             background: var(--primary-red); color: white; font-weight: bold;
             box-shadow: 0 10px 20px rgba(210, 16, 52, 0.4); display: inline-block;
+            margin-top: 20px;
         }
         .btn-hero:hover { transform: scale(1.05); background: #ff2e4d; }
 
         /* --- قسم الهوية --- */
-        .identity-section { padding: 80px 0; position: relative; }
+        .identity-section { padding: 60px 0; position: relative; }
         .identity-card {
-            background: #ffffff; border-radius: 30px; overflow: hidden;
+            background: #ffffff; border-radius: 20px; overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1); transform: rotate(-1deg); transition: var(--transition);
         }
         .identity-card:hover { transform: rotate(0deg) scale(1.02); }
-        .identity-text { padding: 50px; }
-        .identity-text h2 { font-size: 2.5rem; color: var(--primary-green); margin-bottom: 20px; font-weight: 900; }
+        .identity-text { padding: 30px 20px; }
+        .identity-text h2 { font-size: 2rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 900; }
 
         /* --- قسم الفريق --- */
-        .team-section { padding: 100px 0; background-color: #f0f4f1; }
-        .section-title { text-align: center; margin-bottom: 70px; }
+        .team-section { padding: 60px 0; background-color: #f0f4f1; }
+        .section-title { text-align: center; margin-bottom: 50px; }
         .section-title h2 {
-            font-size: 3rem; color: var(--primary-green); font-weight: 900;
-            display: inline-block; position: relative; padding-bottom: 20px;
+            font-size: 2.5rem; color: var(--primary-green); font-weight: 900;
+            display: inline-block; position: relative; padding-bottom: 15px;
         }
         .section-title h2::after {
             content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
@@ -121,32 +126,32 @@
 
         /* المدرب */
         .coach-card {
-            background: #ffffff; border-radius: 20px; padding: 40px;
-            max-width: 400px; margin: 0 auto 80px; text-align: center;
+            background: #ffffff; border-radius: 15px; padding: 30px;
+            max-width: 400px; margin: 0 auto 50px; text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-top: 6px solid var(--primary-red);
         }
         .coach-img {
-            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
-            margin: 0 auto 20px; border: 5px solid var(--primary-green); padding: 3px;
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 15px; border: 5px solid var(--primary-green); padding: 3px;
         }
 
         /* --- تصميم بطاقة اللاعب --- */
         .players-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; margin-bottom: 80px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin-bottom: 50px;
         }
         .player-card {
-            background: #ffffff; border-radius: 20px; overflow: hidden;
+            background: #ffffff; border-radius: 15px; overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: var(--transition);
             position: relative; text-align: center; border: 1px solid rgba(0,0,0,0.05);
         }
         .player-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 98, 51, 0.25);
             border-color: var(--primary-green);
         }
 
         .card-image-wrapper {
-            height: 280px; overflow: hidden; position: relative;
+            height: 250px; overflow: hidden; position: relative;
             background: #e0e0e0;
         }
         .card-img {
@@ -162,62 +167,99 @@
         }
 
         .player-number-badge {
-            position: absolute; top: 15px; right: 15px;
-            width: 50px; height: 50px;
+            position: absolute; top: 10px; right: 10px;
+            width: 40px; height: 40px;
             background: var(--primary-red); color: white;
             border-radius: 50%; border: 3px solid white;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; font-weight: 900; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 1.2rem; font-weight: 900; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .captain-badge {
-            position: absolute; top: 15px; left: 15px;
-            width: 45px; height: 45px; background: var(--accent-gold); color: var(--primary-green);
+            position: absolute; top: 10px; left: 10px;
+            width: 35px; height: 35px; background: var(--accent-gold); color: var(--primary-green);
             border-radius: 50%; border: 3px solid white;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2;
+            font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2;
         }
 
-        .player-body { padding: 20px; position: relative; z-index: 2; background: #ffffff; margin-top: -10px; border-radius: 20px 20px 0 0; }
-        .player-name { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; }
+        .player-body { padding: 15px; position: relative; z-index: 2; background: #ffffff; margin-top: -10px; border-radius: 15px 15px 0 0; }
+        .player-name { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; }
         .player-pos { font-size: 0.9rem; font-weight: 600; color: var(--primary-green); text-transform: uppercase; }
 
         /* الاحتياط */
-        .subs-container { background: #ffffff; border-radius: 20px; padding: 40px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); border-right: 5px solid var(--primary-green); }
-        .sub-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px dashed #ddd; }
+        .subs-container { background: #ffffff; border-radius: 15px; padding: 30px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); border-right: 5px solid var(--primary-green); }
+        .sub-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px dashed #ddd; }
         .sub-item:last-child { border-bottom: none; }
-        .sub-avatar { width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; margin-left: 15px; }
-        .sub-name { font-size: 1.1rem; font-weight: 700; }
+        .sub-avatar { width: 35px; height: 35px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; margin-left: 15px; font-size: 0.9rem; }
+        .sub-name { font-size: 1rem; font-weight: 700; }
 
         /* المباريات */
         .matches-section {
-            background: var(--primary-green); padding: 80px 0; color: white; position: relative; overflow: hidden;
+            background: var(--primary-green); padding: 60px 0; color: white; position: relative; overflow: hidden;
         }
         .match-card {
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px; padding: 40px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-radius: 15px; padding: 30px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        .match-date { background: #ffffff; color: var(--primary-green); padding: 15px; border-radius: 15px; text-align: center; min-width: 110px; }
-        .match-date .day { font-size: 2.5rem; font-weight: 900; line-height: 1; color: var(--primary-red); }
-        .match-teams { display: flex; align-items: center; gap: 40px; flex-grow: 1; justify-content: center; }
-        .team-logo-img { width: 90px; height: 90px; background: #ffffff; border-radius: 50%; padding: 10px; object-fit: contain; }
-        .vs { font-size: 2.5rem; font-weight: 900; color: var(--accent-gold); font-style: italic; }
-        .match-info { text-align: right; padding-right: 30px; border-right: 2px solid rgba(255,255,255,0.3); min-width: 200px; }
+        .match-date { background: #ffffff; color: var(--primary-green); padding: 10px; border-radius: 15px; text-align: center; min-width: 90px; margin-bottom: 15px; }
+        .match-date .day { font-size: 2rem; font-weight: 900; line-height: 1; color: var(--primary-red); }
+        .match-teams { display: flex; align-items: center; gap: 20px; flex-grow: 1; justify-content: center; width: 100%; }
+        .team-logo-img { width: 70px; height: 70px; background: #ffffff; border-radius: 50%; padding: 5px; object-fit: contain; }
+        .vs { font-size: 1.8rem; font-weight: 900; color: var(--accent-gold); font-style: italic; }
+        .match-info { text-align: center; width: 100%; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); }
+        .match-info p { margin-bottom: 5px; font-size: 0.9rem; }
 
         /* الفوتر */
-        footer { background-color: #111; color: #888; padding: 60px 0 20px; border-top: 5px solid var(--primary-red); text-align: center; }
-        .footer-logo { font-size: 1.8rem; font-weight: 900; color: #ffffff; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-        .social-icons a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); color: #ffffff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 10px; transition: 0.3s; }
+        footer { background-color: #111; color: #888; padding: 40px 0 20px; border-top: 5px solid var(--primary-red); text-align: center; }
+        .footer-logo { font-size: 1.5rem; font-weight: 900; color: #ffffff; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .social-icons a { width: 35px; height: 35px; background: rgba(255,255,255,0.1); color: #ffffff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 5px; transition: 0.3s; }
         .social-icons a:hover { background: var(--primary-green); }
 
+        /* --- استجابة الشاشات (Media Queries) --- */
+        
+        /* تابلت و شاشات متوسطة */
         @media (max-width: 900px) {
-            .hero h1 { font-size: 2.5rem; }
-            .match-card { flex-direction: column; gap: 30px; text-align: center; }
-            .match-info { border-right: none; border-top: 2px solid rgba(255,255,255,0.2); padding-right: 0; padding-top: 20px; width: 100%; }
-            .nav-links { position: fixed; top: 90px; right: -100%; width: 100%; background: #ffffff; flex-direction: column; padding: 30px; transition: 0.5s; }
+            .nav-links { 
+                position: fixed; top: 80px; right: -100%; width: 100%; background: #ffffff; 
+                flex-direction: column; padding: 30px; transition: 0.5s; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center;
+            }
             .nav-links.active { right: 0; }
             .mobile-menu-btn { display: block; }
+            .match-card { flex-direction: column; }
         }
+
+        /* هواتف */
+        @media (max-width: 768px) {
+            .container { width: 95%; padding: 0 10px; }
+            .hero h1 { font-size: 2.2rem; }
+            
+            /* شبكة اللاعبين: عمودين للهواتف المتوسطة */
+            .players-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .card-image-wrapper { height: 200px; }
+            .player-number-badge { width: 35px; height: 35px; font-size: 1rem; top: 8px; right: 8px; }
+            .captain-badge { width: 30px; height: 30px; font-size: 1rem; top: 8px; left: 8px; }
+            
+            .section-title h2 { font-size: 2rem; }
+        }
+
+        /* هواتف صغيرة جداً */
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .btn-hero { padding: 10px 25px; font-size: 0.9rem; }
+            
+            /* شبكة اللاعبين: عمود واحد فقط */
+            .players-grid { grid-template-columns: 1fr; }
+            
+            .identity-card { transform: none; } /* إلغاء الميلان لضمان العرض الجيد */
+            .team-logo-img { width: 60px; height: 60px; }
+            .match-teams { gap: 15px; }
+        }
+
         @keyframes spin-slow { 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -272,7 +314,7 @@
             <!-- المدرب -->
             <div class="coach-card reveal">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" alt="المدرب" class="coach-img">
-                <h3 style="font-size:1.5rem; color:var(--primary-green); font-weight:800;">بقة المسعود</h3>
+                <h3 style="font-size:1.4rem; color:var(--primary-green); font-weight:800;">بقة المسعود</h3>
                 <p style="color:var(--primary-red); font-weight:700;">المدرب الرئيسي</p>
             </div>
 
@@ -396,7 +438,7 @@
                     </div>
                 </div>
 
-                <!-- 10. خذير محمد (تم تحديث الصورة) -->
+                <!-- 10. خذير محمد -->
                 <div class="player-card">
                     <div class="card-image-wrapper">
                         <img src="https://z-cdn-media.chatglm.cn/files/a711e619-3796-4c20-a2b3-f1098c6f3b0d.jpg?auth_key=1869797745-00106b88bd8c4a27b42f3e94cf697444-0-e9ac4f4f86247e5b087e6261137349f1" alt="خذير محمد" class="card-img">
@@ -425,7 +467,7 @@
             </div>
 
             <!-- الاحتياط -->
-            <h3 class="reveal" style="text-align: center; font-size: 2rem; color: var(--text-dark); margin-bottom: 30px; font-weight: 800;">الاحتياطيون</h3>
+            <h3 class="reveal" style="text-align: center; font-size: 1.5rem; color: var(--text-dark); margin-bottom: 20px; font-weight: 800;">الاحتياطيون</h3>
             <div class="subs-container reveal">
                 <div class="sub-item"><div class="sub-avatar">RI</div><div class="sub-name">رفيق ابراهيم</div></div>
                 <div class="sub-item"><div class="sub-avatar">CT</div><div class="sub-name">شنافي توفيق</div></div>
@@ -477,7 +519,7 @@
                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
                 <a href="#"><i class="fa-brands fa-youtube"></i></a>
             </div>
-            <div style="text-align: center; margin-top: 30px; font-size: 0.8rem; color: #555;">
+            <div style="text-align: center; margin-top: 20px; font-size: 0.8rem; color: #555;">
                 جميع الحقوق محفوظة &copy; 2023 نادي مولودية حاسي بحبح
             </div>
         </div>
