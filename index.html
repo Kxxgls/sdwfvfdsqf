@@ -1,1439 +1,511 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>القوة والحركات المنحنية - ملخص وتمارين</title>
-  
-  <!-- استيراد خط Cairo -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      color-scheme: light;
-      --bg-body: #f3f6fc;
-      --bg-glass: rgba(255, 255, 255, 0.85);
-      --bg-card: #ffffff;
-      --primary: #4f46e5;
-      --primary-soft: #e0e7ff;
-      --primary-faded: rgba(79, 70, 229, 0.1);
-      --accent: #f59e0b;
-      --accent-soft: #fef3c7;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --border-soft: #e2e8f0;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-      --radius-lg: 1rem;
-      --radius-xl: 1.5rem;
-      --radius-full: 9999px;
-    }
-
-    * {
-      box-sizing: border-box;
-      outline: none;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Cairo', sans-serif;
-      background-color: var(--bg-body);
-      color: var(--text-main);
-      line-height: 1.7;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
-      background-attachment: fixed;
-    }
-
-    .app {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background: var(--bg-glass);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-soft);
-      padding: 2rem 1.5rem;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: var(--shadow-sm);
-    }
-
-    header h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--text-main);
-      letter-spacing: -0.02em;
-    }
-
-    header h1 span.mark {
-      background: var(--primary-soft);
-      color: var(--primary);
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius-full);
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-right: 0.5rem;
-    }
-
-    header .author-info {
-      display: inline-block;
-      background: #f8fafc;
-      border: 1px solid var(--border-soft);
-      padding: 0.6rem 1.2rem;
-      border-radius: var(--radius-lg);
-      font-size: 0.95rem;
-      color: var(--text-main);
-      font-weight: 500;
-      margin-top: 0.5rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    header p {
-      margin: 1rem auto 0;
-      max-width: 600px;
-      font-size: 1rem;
-      color: var(--text-muted);
-    }
-
-    .layout {
-      flex: 1;
-      display: flex;
-      padding: 2rem;
-      gap: 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    nav {
-      width: 280px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 7rem;
-      height: fit-content;
-      max-height: calc(100vh - 9rem);
-      overflow-y: auto;
-      scrollbar-width: none; 
-      -ms-overflow-style: none;
-      padding-right: 5px;
-    }
-    nav::-webkit-scrollbar { display: none; }
-
-    .nav-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .nav-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius-lg);
-      border: 1px solid transparent;
-      background: transparent;
-      text-align: right;
-      font-family: inherit;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 400;
-    }
-
-    .nav-link span.emoji {
-      margin-left: 0.75rem;
-      font-size: 1.1rem;
-      opacity: 0.7;
-    }
-
-    .nav-link:hover {
-      background: white;
-      color: var(--primary);
-      box-shadow: var(--shadow-sm);
-      transform: translateX(-4px);
-    }
-
-    .nav-link.active {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-      font-weight: 600;
-    }
-    .nav-link.active span.emoji {
-      opacity: 1;
-    }
-
-    main {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .content {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    section {
-      background: var(--bg-card);
-      border-radius: var(--radius-xl);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow-md);
-      border: 1px solid white;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    section:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
-    }
-
-    section h2 {
-      margin: 0 0 1.5rem 0;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      color: var(--text-main);
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-soft);
-      font-weight: 700;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولودية حاسي بحبح - الأسطورة</title>
     
-    section h2 span.icon {
-      font-size: 1.5rem;
-      background: var(--primary-soft);
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      color: var(--primary);
-    }
+    <!-- خطوط عربية وأيقونات -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    h3 {
-      font-size: 1.1rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0.75rem;
-      color: var(--text-main);
-      font-weight: 600;
-    }
+    <style>
+        /* --- متغيرات الألوان --- */
+        :root {
+            --primary-green: #006233; 
+            --dark-green: #004d26;
+            --primary-red: #D21034;   
+            --accent-gold: #FFD700;
+            --text-dark: #1a1a1a;
+            --bg-light: #f8f9fa;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-    p {
-      margin: 0.75rem 0;
-      font-size: 1rem;
-      color: #334155;
-    }
+        /* --- الإعدادات العامة --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        .container { width: 90%; max-width: 1300px; margin: 0 auto; padding: 0 20px; }
 
-    ul, ol {
-      margin: 0.75rem 0;
-      padding-right: 1.5rem;
-      color: #475569;
-    }
+        /* --- تأثيرات الظهور --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-    li {
-      margin-bottom: 0.5rem;
-    }
+        /* --- الهيدر --- */
+        header {
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 90px; }
+        
+        .logo {
+            font-size: 1.8rem; font-weight: 900; color: var(--primary-green);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .logo span { color: var(--primary-red); }
+        .logo i { animation: spin-slow 10s linear infinite; }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); position: relative; }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px; bottom: -5px; right: 0;
+            background: linear-gradient(90deg, var(--primary-green), var(--primary-red)); transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--primary-green); }
+        .nav-links a:hover::after { width: 100%; }
 
-    .formula {
-      direction: ltr;
-      unicode-bidi: bidi-override;
-      display: inline-block;
-      background: #f1f5f9;
-      color: var(--text-main);
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      font-family: "Consolas", "Monaco", monospace;
-      font-size: 0.9rem;
-      border: 1px solid var(--border-soft);
-    }
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            color: #ffffff; padding: 12px 30px; border-radius: 50px;
+            font-weight: 800; border: 2px solid transparent;
+        }
+        .cta-btn:hover {
+            background: #ffffff; color: var(--primary-green); border-color: var(--primary-green);
+        }
+        .mobile-menu-btn { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary-green); }
 
-    .note {
-      border-radius: var(--radius-lg);
-      padding: 1rem;
-      background: var(--accent-soft);
-      border: 1px solid #fcd34d;
-      font-size: 0.9rem;
-      color: #92400e;
-      margin-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      align-items: flex-start;
-    }
+        /* --- هيرو --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 20, 10, 0.8), rgba(0, 20, 10, 0.9)),
+                        url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat fixed;
+            display: flex; align-items: center; text-align: center; color: #ffffff;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        .hero h1 {
+            font-size: 4rem; font-weight: 900; margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: linear-gradient(to right, #fff, #ddd);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .btn-hero {
+            padding: 15px 40px; font-size: 1.2rem; border-radius: 50px;
+            background: var(--primary-red); color: white; font-weight: bold;
+            box-shadow: 0 10px 20px rgba(210, 16, 52, 0.4); display: inline-block;
+        }
+        .btn-hero:hover { transform: scale(1.05); background: #ff2e4d; }
 
-    .grid-two {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
+        /* --- قسم الهوية --- */
+        .identity-section { padding: 80px 0; position: relative; }
+        .identity-card {
+            background: #ffffff; border-radius: 30px; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); transform: rotate(-1deg); transition: var(--transition);
+        }
+        .identity-card:hover { transform: rotate(0deg) scale(1.02); }
+        .identity-text { padding: 50px; }
+        .identity-text h2 { font-size: 2.5rem; color: var(--primary-green); margin-bottom: 20px; font-weight: 900; }
 
-    .sub-card {
-      background: #f8fafc;
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      border: 1px solid var(--border-soft);
-    }
+        /* --- قسم الفريق --- */
+        .team-section { padding: 100px 0; background-color: #f0f4f1; }
+        .section-title { text-align: center; margin-bottom: 70px; }
+        .section-title h2 {
+            font-size: 3rem; color: var(--primary-green); font-weight: 900;
+            display: inline-block; position: relative; padding-bottom: 20px;
+        }
+        .section-title h2::after {
+            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 5px; background: var(--primary-red); border-radius: 10px;
+        }
 
-    .tag {
-      display: inline-block;
-      background: #e2e8f0;
-      border-radius: 6px;
-      padding: 0.1rem 0.5rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
+        /* المدرب */
+        .coach-card {
+            background: #ffffff; border-radius: 20px; padding: 40px;
+            max-width: 400px; margin: 0 auto 80px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-top: 6px solid var(--primary-red);
+        }
+        .coach-img {
+            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 20px; border: 5px solid var(--primary-green); padding: 3px;
+        }
 
-    .exercise-title {
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        /* --- تصميم بطاقة اللاعب --- */
+        .players-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; margin-bottom: 80px;
+        }
+        .player-card {
+            background: #ffffff; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: var(--transition);
+            position: relative; text-align: center; border: 1px solid rgba(0,0,0,0.05);
+        }
+        .player-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 98, 51, 0.25);
+            border-color: var(--primary-green);
+        }
 
-    .mcq-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      margin-top: 1rem;
-      font-size: 0.95rem;
-    }
+        .card-image-wrapper {
+            height: 280px; overflow: hidden; position: relative;
+            background: #e0e0e0;
+        }
+        .card-img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .player-card:hover .card-img { transform: scale(1.1); }
 
-    .mcq-table th,
-    .mcq-table td {
-      border-bottom: 1px solid var(--border-soft);
-      border-right: 1px solid var(--border-soft);
-      padding: 0.8rem 1rem;
-      text-align: right;
-      vertical-align: top;
-    }
-    
-    .mcq-table tr:last-child td { border-bottom: none; }
+        .image-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            pointer-events: none;
+        }
 
-    .mcq-table th {
-      background: #f8fafc;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-    
-    .mcq-table tr:hover td { background-color: #fcfcfd; }
+        .player-number-badge {
+            position: absolute; top: 15px; right: 15px;
+            width: 50px; height: 50px;
+            background: var(--primary-red); color: white;
+            border-radius: 50%; border: 3px solid white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; font-weight: 900; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .captain-badge {
+            position: absolute; top: 15px; left: 15px;
+            width: 45px; height: 45px; background: var(--accent-gold); color: var(--primary-green);
+            border-radius: 50%; border: 3px solid white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2;
+        }
 
-    footer {
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-top: auto;
-      border-top: 1px solid var(--border-soft);
-      background: var(--bg-card);
-    }
+        .player-body { padding: 20px; position: relative; z-index: 2; background: #ffffff; margin-top: -10px; border-radius: 20px 20px 0 0; }
+        .player-name { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; }
+        .player-pos { font-size: 0.9rem; font-weight: 600; color: var(--primary-green); text-transform: uppercase; }
 
-    .top-btn {
-      position: fixed;
-      left: 2rem;
-      bottom: 2rem;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
-      background: var(--primary);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-      cursor: pointer;
-      font-size: 1.2rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 100;
-    }
+        /* الاحتياط */
+        .subs-container { background: #ffffff; border-radius: 20px; padding: 40px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); border-right: 5px solid var(--primary-green); }
+        .sub-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px dashed #ddd; }
+        .sub-item:last-child { border-bottom: none; }
+        .sub-avatar { width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; margin-left: 15px; }
+        .sub-name { font-size: 1.1rem; font-weight: 700; }
 
-    .top-btn.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
+        /* المباريات */
+        .matches-section {
+            background: var(--primary-green); padding: 80px 0; color: white; position: relative; overflow: hidden;
+        }
+        .match-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 40px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .match-date { background: #ffffff; color: var(--primary-green); padding: 15px; border-radius: 15px; text-align: center; min-width: 110px; }
+        .match-date .day { font-size: 2.5rem; font-weight: 900; line-height: 1; color: var(--primary-red); }
+        .match-teams { display: flex; align-items: center; gap: 40px; flex-grow: 1; justify-content: center; }
+        .team-logo-img { width: 90px; height: 90px; background: #ffffff; border-radius: 50%; padding: 10px; object-fit: contain; }
+        .vs { font-size: 2.5rem; font-weight: 900; color: var(--accent-gold); font-style: italic; }
+        .match-info { text-align: right; padding-right: 30px; border-right: 2px solid rgba(255,255,255,0.3); min-width: 200px; }
 
-    .top-btn:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
-    }
+        /* الفوتر */
+        footer { background-color: #111; color: #888; padding: 60px 0 20px; border-top: 5px solid var(--primary-red); text-align: center; }
+        .footer-logo { font-size: 1.8rem; font-weight: 900; color: #ffffff; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .social-icons a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); color: #ffffff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 10px; transition: 0.3s; }
+        .social-icons a:hover { background: var(--primary-green); }
 
-    .diagram-container {
-      width: 100%;
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border-soft);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-      display: block;
-    }
-
-    .svg-axis { stroke: #94a3b8; stroke-width: 1.5; marker-end: url(#arrow); }
-    .svg-path { fill: none; stroke: var(--primary); stroke-width: 2.5; stroke-dasharray: 6, 6; stroke-opacity: 0.6; }
-    .svg-vector-v { stroke: var(--primary); stroke-width: 3; }
-    .svg-vector-vx { stroke: #10b981; stroke-width: 3; }
-    .svg-vector-vy { stroke: #ef4444; stroke-width: 3; }
-    .svg-vector-f { stroke: #6366f1; stroke-width: 3; }
-    .svg-label { font-size: 13px; font-family: 'Cairo', sans-serif; fill: var(--text-main); font-weight: 600; }
-    .svg-point { fill: var(--text-main); }
-
-    .anim-object { animation: moveProjectile 3s linear infinite; }
-    .anim-rotate {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: rotateCircular 4s linear infinite;
-    }
-    .anim-satellite-group {
-      transform-origin: center;
-      animation: rotateSatellite 8s linear infinite;
-    }
-
-    @keyframes rotateCircular {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes moveProjectile {
-      0% { offset-distance: 0%; opacity: 1; transform: scale(1); }
-      90% { opacity: 1; transform: scale(1); }
-      100% { offset-distance: 100%; opacity: 0; transform: scale(0.8); }
-    }
-
-    @media (max-width: 1024px) {
-      .layout {
-        flex-direction: column;
-        padding: 1rem;
-      }
-      nav {
-        width: 100%;
-        max-width: 100%;
-        position: relative;
-        top: 0;
-        height: auto;
-        max-height: 250px;
-        background: white;
-        border-radius: var(--radius-lg);
-        padding: 1rem;
-        margin-bottom: 1rem;
-        box-shadow: var(--shadow-sm);
-      }
-      header {
-        padding: 1.5rem 1rem;
-      }
-      header h1 { font-size: 1.4rem; }
-      section {
-        padding: 1.5rem;
-      }
-      .grid-two {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-  </style>
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.5rem; }
+            .match-card { flex-direction: column; gap: 30px; text-align: center; }
+            .match-info { border-right: none; border-top: 2px solid rgba(255,255,255,0.2); padding-right: 0; padding-top: 20px; width: 100%; }
+            .nav-links { position: fixed; top: 90px; right: -100%; width: 100%; background: #ffffff; flex-direction: column; padding: 30px; transition: 0.5s; }
+            .nav-links.active { right: 0; }
+            .mobile-menu-btn { display: block; }
+        }
+        @keyframes spin-slow { 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-<div class="app">
-  <header>
-    <h1>📘 القوة والحركات المنحنية <span class="mark">فيزياء 1 ثانوي</span></h1>
-    
-    <div class="author-info">
-        🎓 هذا الموقع تم صناعته من قبل الطالب <strong>فارس بريكات</strong>، تلميذ في <strong>ثانوية محمد صالح بلعباس</strong>.
-    </div>
 
-    <p>
-      منصة تعليمية تفاعلية تجمع ملخص الدرس، الرسوم التوضيحية، والتمارين المحلولة لوحدة القوة والحركات المنحنية.    </p>
-  </header>
-
-  <div class="layout">
-    <nav aria-label="التنقل داخل الصفحة">
-      <div class="nav-title"><span>🧭</span> فهرس المحتوى</div>
-      <ul class="nav-list">
-        <li><button class="nav-link active" data-target="intro"><span class="emoji">🏁</span>مقدمة الوحدة</button></li>
-        <li><button class="nav-link" data-target="curvilinear"><span class="emoji">🎯</span>الحركة المنحنية</button></li>
-        <li><button class="nav-link" data-target="circular"><span class="emoji">⭕</span>الحركة الدائرية المنتظمة</button></li>
-        <li><button class="nav-link" data-target="satellite"><span class="emoji">🛰️</span>محاكاة حركة قمر اصطناعي</button></li>
-        <li><button class="nav-link" data-target="simulations"><span class="emoji">🧪</span>المختبر الافتراضي</button></li>
-        <li><button class="nav-link" data-target="proj-horizontal"><span class="emoji">📐</span>قذيفة أفقية</button></li>
-        <li><button class="nav-link" data-target="proj-oblique"><span class="emoji">🏹</span>قذيفة بسرعة مائلة</button></li>
-        <li><button class="nav-link" data-target="activity-curvilinear"><span class="emoji">🧪</span>نشاط: سرعة لحظية</button></li>
-        <li><button class="nav-link" data-target="activity-circular"><span class="emoji">🧪</span>نشاط: حركة دائرية</button></li>
-        <li><button class="nav-link" data-target="activity-projectile"><span class="emoji">🧪</span>نشاط: حركة قذفية</button></li>
-        <li><button class="nav-link" data-target="exercise-10"><span class="emoji">📝</span>تمرين 10: قذف أفقي</button></li>
-        <li><button class="nav-link" data-target="exercise-20"><span class="emoji">📝</span>تمرين 20: قذف مع مقاومة</button></li>
-        <li><button class="nav-link" data-target="exercise-6"><span class="emoji">📝</span>تمرين 06: بيان السرعة</button></li>
-        <li><button class="nav-link" data-target="exercise-01"><span class="emoji">📝</span>تمرين 01: المسار ABCD</button></li>
-        <li><button class="nav-link" data-target="exercise-23"><span class="emoji">🏅</span>تمرين 23: رمي الجلة</button></li>
-      </ul>
-    </nav>
-
-    <main>
-      <div class="content">
-
-        <!-- Intro -->
-        <section id="intro">
-          <h2><span class="icon">🏁</span> مقدمة الوحدة 03: القوة والحركات المنحنية</h2>
-          <p>
-            تهدف هذه الوحدة إلى دراسة الحركات المنحنية (مسار غير مستقيم) مثل:
-            الحركة الدائرية المنتظمة، حركة القذيفة (أفقية ومائلة)، ومحاكاة حركة قمر اصطناعي،
-            إضافة إلى تحليل السرعة اللحظية وشعاع تغير السرعة والقوة التي تسبب هذه الحركات.
-          </p>
-          <p>
-            هذه الصفحة تجمع:
-          </p>
-          <ul>
-            <li>ملخص نظري منظم للدرس.</li>
-            <li>أنشطة بيانية.</li>
-            <li>سلسلة من التمارين.</li>
-            <li><strong>رسوم توضيحية تفاعلية</strong> لمساعدتك على فهم المسارات والأشعة.</li>
-          </ul>
-          <div class="note">
-            💡 ملاحظة: تم ترتيب المحتوى وتنسيقه ليتلاءم مع العرض على الويب بتصميم راقي.
-          </div>
-        </section>
-
-        <!-- Curvilinear motion -->
-        <section id="curvilinear">
-          <h2><span class="icon">🎯</span> 1- الحركة المنحنية</h2>
-
-          <h3>1-1 تعريف الحركة المنحنية</h3>
-          <p>
-            نقول إن حركة جسم ما <strong>منحنية</strong> عندما يكون مساره غير مستقيم
-            (منحنى، دائرة، قطع مكافئ...). في هذه الحالة لا يكون اتجاه شعاع السرعة ثابتا.
-          </p>
-
-          <h3>1-2 السرعة اللحظية على مسار منحنٍ</h3>
-          <p>
-            لدراسة الحركة على مسار منحنٍ نلتقط متتالية من المواضع
-            <span class="formula">M₁, M₂, M₃, ...</span> مفصولة بزمن ثابت
-            <span class="formula">τ</span>.
-          </p>
-          <p>
-            السرعة المتوسطة بين الموضعين المتتالين
-            <span class="formula">M₁</span> و <span class="formula">M₂</span> هي:
-          </p>
-          <p>
-            <span class="formula">v = Δx / Δt = M₁M₂ / τ</span>
-          </p>
-
-          <h3>1-3 شعاع السرعة اللحظية ⃗v</h3>
-          <ul>
-            <li>مبدأه: في موضع الجسم (النقطة <span class="formula">M</span> من المسار).</li>
-            <li>منحاه: مماس للمسار في النقطة <span class="formula">M</span>.</li>
-            <li>اتجاهه: نفس اتجاه الحركة على المسار.</li>
-            <li>
-              طوله: يختار حسب <strong>سلم للسرعة</strong> مثلا:
-              <span class="formula">1 cm ⟶ 1.5 m/s</span>.
-            </li>
-          </ul>
-
-          <h3>1-4 شعاع تغير السرعة Δ⃗v</h3>
-          <p>
-            عند الانتقال من الموضع <span class="formula">M₁</span> إلى
-            <span class="formula">M₂</span> تكون سرعتي الجسم:
-            <span class="formula">⃗v₁</span> و <span class="formula">⃗v₂</span>.
-          </p>
-          <p>
-            يُعرَّف <strong>شعاع تغير السرعة</strong> بالعلاقة:
-            <span class="formula">Δ⃗v = ⃗v₂ − ⃗v₁</span>
-          </p>
-
-          <p>تمثيل <span class="formula">Δ⃗v</span> بيانيا:</p>
-          <ol>
-            <li>نمثّل الشعاعين <span class="formula">⃗v₁</span> و <span class="formula">⃗v₂</span> في موضعيهما.</li>
-            <li>نختار نقطة <span class="formula">O</span> خارج المسار.</li>
-            <li>ننقل الشعاع <span class="formula">⃗v₁</span> بحيث يصبح مبدؤه في <span class="formula">O</span>.</li>
-            <li>ننقل الشعاع <span class="formula">⃗v₂</span> أيضا إلى المبدأ نفسه <span class="formula">O</span>.</li>
-            <li>
-              نحصل على الشعاع <span class="formula">Δ⃗v</span> بإنشاء متوازي أضلاع
-              قاعدتاه <span class="formula">⃗v₁</span> و <span class="formula">⃗v₂</span>.
-            </li>
-          </ol>
-          <p>
-            في كثير من الحركات المنحنية (خاصة الدورانية المنتظمة) يكون الشعاع
-            <span class="formula">Δ⃗v</span> موجها نحو مركز المسار.
-          </p>
-        </section>
-
-        <!-- Circular motion -->
-        <section id="circular">
-          <h2><span class="icon">⭕</span> 2- الحركة الدائرية المنتظمة</h2>
-
-          <h3>2-1 تعريف</h3>
-          <p>
-            تكون الحركة <strong>دائرية منتظمة</strong> إذا:
-          </p>
-          <ul>
-            <li>كان مسار الجسم <strong>دائرة</strong> نصف قطرها <span class="formula">R</span>.</li>
-            <li>قيمة السرعة <span class="formula">v</span> ثابتة في جميع المواضع.</li>
-            <li>يوجد نصف قطر <span class="formula">R</span> يصل بين مركز الدائرة <span class="formula">O</span> والنقطة المتحركة <span class="formula">M</span>.</li>
-          </ul>
-
-          <h3>2-2 مميزات شعاع السرعة في الحركة الدائرية المنتظمة</h3>
-          <ul>
-            <li>مبدأه: النقطة المتحركة <span class="formula">M</span> على الدائرة.</li>
-            <li>منحاه: مماس للمسار الدائري في <span class="formula">M</span>.</li>
-            <li>عمودي دائما على نصف القطر <span class="formula">⃗OM</span>.</li>
-            <li>طوله ثابت لأن قيمة السرعة ثابتة.</li>
-          </ul>
-
-          <h3>2-3 شعاع تغير السرعة والقوة المركزية</h3>
-          <ul>
-            <li>
-              في الحركة الدائرية المنتظمة يكون شعاع تغير السرعة
-              <span class="formula">Δ⃗v</span> موجهًا نحو مركز الدائرة، وقيمته ثابتة.
-            </li>
-            <li>
-              يوجد <strong>قوة</strong> مؤثرة على الجسم (مثل قوة الشد أو قوة الجذب)
-              يكون شعاعها <span class="formula">⃗F</span> موجها نحو المركز أيضًا، وتسمّى
-              <strong>القوة المركزية</strong>.
-            </li>
-            <li>الشعاعان <span class="formula">⃗F</span> و <span class="formula">Δ⃗v</span> لهما نفس المنحى وغالبا نفس الاتجاه.</li>
-          </ul>
-
-          <div class="grid-two">
-            <div class="sub-card">
-              <h3>2-4 الزمن الدوري والتواتر</h3>
-              <p>
-                إذا تمّت دورة كاملة في زمن <span class="formula">T</span> فإن:
-              </p>
-              <ul>
-                <li>يسمى <span class="formula">T</span> <strong>الزمن الدوري</strong>.</li>
-                <li>
-                  التواتر <span class="formula">f</span> هو عدد الدورات في الثانية:
-                  <span class="formula">f = 1 / T</span>.
-                </li>
-              </ul>
+    <header id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-fan"></i> MC HBB <span>1992</span>
+            </a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#hero">الرئيسية</a></li>
+                    <li><a href="#about">النادي</a></li>
+                    <li><a href="#team">التشكيلة</a></li>
+                    <li><a href="#matches">المباريات</a></li>
+                    <li><a href="#contact" class="cta-btn">تواصل</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
             </div>
-            <div class="sub-card">
-              <h3>2-5 السرعة الدورانية</h3>
-              <p>
-                في الحركة الدائرية المنتظمة يرتبط طول المسار في دورة واحدة
-                <span class="formula">L = 2πR</span> بالسرعة بالعلاقة:
-              </p>
-              <p><span class="formula">v = 2πR / T</span></p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Satellite simulation -->
-        <section id="satellite">
-          <h2><span class="icon">🛰️</span> 3- محاكاة حركة قمر اصطناعي</h2>
-          <p>
-            ندرس حركة قمر اصطناعي (قمر صناعي أو قمر طبيعي كالقمر حول الأرض) في مدار دائري
-            حول الأرض.
-          </p>
-
-          <ul>
-            <li>مركز المدار هو مركز الأرض <span class="formula">O</span>.</li>
-            <li>
-              نصف قطر المدار:
-              <span class="formula">OM = Rᵀ + h</span>
-              حيث <span class="formula">Rᵀ</span> نصف قطر الأرض و
-              <span class="formula">h</span> ارتفاع القمر عن سطح الأرض.
-            </li>
-            <li>تعتبر الحركة تقريبًا <strong>دائرية منتظمة</strong>.</li>
-            <li>
-              القوة الوحيدة تقريبًا المؤثرة على القمر هي <strong>قوة جذب الأرض</strong>
-              والموجهة نحو المركز، وهي التي تؤمن الدوران (قوة مركزية).
-            </li>
-          </ul>
-          
-          <div class="diagram-container" style="background: #f8fafc;">
-            <svg viewBox="0 0 300 300">
-                <defs>
-                    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
-                    </marker>
-                    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1" />
-                    </marker>
-                </defs>
-
-                <!-- Orbit Path (Static Dashed) -->
-                <circle cx="150" cy="150" r="110" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8,4" />
-
-                <!-- Rotating Group: Earth + Radius + Satellite + Vectors -->
-                <g class="anim-satellite-group" style="transform-origin: 150px 150px;">
-                    
-                    <!-- Radius Line -->
-                    <line x1="150" y1="150" x2="150" y2="40" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4" />
-
-                    <!-- Satellite Point -->
-                    <circle cx="150" cy="40" r="8" fill="#f59e0b" />
-                    <text x="145" y="25" class="svg-label" style="fill:#f59e0b; font-weight:bold;">M</text>
-
-                    <!-- Velocity Vector (Tangent) -->
-                    <line x1="150" y1="40" x2="220" y2="40" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow-blue)" />
-                    <text x="165" y="30" class="svg-label" fill="#6366f1">⃗v</text>
-
-                    <!-- Gravity Force Vector (Centripetal) -->
-                    <line x1="150" y1="40" x2="150" y2="90" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)" />
-                    <text x="155" y="75" class="svg-label" fill="#ef4444">⃗F</text>
-                </g>
-
-                <!-- Earth (Center) -->
-                <circle cx="150" cy="150" r="30" fill="#e0e7ff" />
-                <circle cx="150" cy="150" r="30" fill="none" stroke="#6366f1" stroke-width="2" />
-                <text x="140" y="155" class="svg-label" style="font-weight:bold;">O</text>
-            </svg>
         </div>
-        <div class="note">
-            ⚙️ يوضح الرسم: السرعة (⃗v) مماسة للمدار دائما، والقوة (⃗F) موجهة نحو مركز الأرض (قوة مركزية).
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="container hero-content reveal active">
+            <h1>مولودية حاسي بحبح<br>الأسطورة تتكلم</h1>
+            <p>شعارنا الأخضر، ودماؤنا الحمراء. نمثل الفخر والعزيمة.</p>
+            <a href="#team" class="btn-hero">شاهد التشكيلة</a>
         </div>
+    </section>
 
-          <p>
-            بتطبيق قانون التجاذب الكوني يمكن ربط سرعة القمر بنصف قطر المدار، لكن في هذا
-            الملخص يهمنا فقط تفسير كون مساره دائريًا وأن القوة المسببة للحركة موجهة نحو المركز.
-          </p>
-        </section>
-
-        <!-- NEW SECTION: Simulations/Diagrams -->
-        <section id="simulations">
-          <h2><span class="icon">🧪</span> المختبر الافتراضي: الرسوم التوضيحية</h2>
-          <p>هذه الرسوم التفاعلية تساعدك على تصور الحركة:</p>
-
-          <div class="grid-two">
-            <!-- Diagram 1: Circular Motion -->
-            <div class="sub-card">
-              <h3>1. الحركة الدائرية المنتظمة</h3>
-              <p>توضح الحركة الدائرية مع شعاع السرعة <span class="formula">⃗v</span> وشعاع القوة <span class="formula">⃗F</span>.</p>
-              <div class="diagram-container">
-                <svg viewBox="0 0 200 200">
-                  <defs>
-                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
-                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
-                    </marker>
-                    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5"
-                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
-                    </marker>
-                    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5"
-                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1" />
-                    </marker>
-                  </defs>
-
-                  <!-- Center O -->
-                  <circle cx="100" cy="100" r="3" class="svg-point" />
-                  <text x="90" y="115" class="svg-label">O</text>
-
-                  <!-- The Path (Dashed) -->
-                  <circle cx="100" cy="100" r="70" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4"/>
-
-                  <!-- Radius Line (Rotated with group) -->
-                  <g class="anim-rotate">
-                    <line x1="100" y1="100" x2="100" y2="30" stroke="#64748b" stroke-width="2" />
-                    
-                    <!-- Point M -->
-                    <circle cx="100" cy="30" r="5" fill="#6366f1" />
-                    <text x="105" y="25" class="svg-label">M</text>
-                    
-                    <!-- Velocity Vector (Tangent) - Points Right at top position -->
-                    <line x1="100" y1="30" x2="160" y2="30" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow-red)" />
-                    <text x="130" y="20" class="svg-label" fill="#f59e0b">⃗v</text>
-                    
-                    <!-- Force Vector (Centripetal) - Points Down at top position -->
-                    <line x1="100" y1="30" x2="100" y2="80" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow-blue)" />
-                    <text x="105" y="65" class="svg-label" fill="#6366f1">⃗F</text>
-                  </g>
-                </svg>
-              </div>
-              <div class="note" style="margin-top:0.5rem; background:#f1f5f9; border-color:#cbd5e1; color:#475569">
-                <span class="badge" style="background:#e2e8f0; color:#475569">ملاحظة</span> السرعة مماسة، والقوة نحو المركز.
-              </div>
+    <section class="identity-section" id="about">
+        <div class="container reveal">
+            <div class="identity-card">
+                <img src="https://z-cdn-media.chatglm.cn/files/bde9bc95-4819-4eae-b8c7-422fba0798d4.png?auth_key=1869793138-23900df9fba24bf3898be9df33f3b90c-0-93a96ce75b474a5f0215a4e6ae2a016f" alt="غلاف النادي">
+                <div class="identity-text">
+                    <h2>أكثر من مجرد نادي</h2>
+                    <p>نحن جماعة متحدة تحت راية الطاحونة، نمثل تراثاً عريقاً ومستقبلاً واعداً.</p>
+                </div>
             </div>
-
-            <!-- Diagram 2: Projectile Horizontal -->
-            <div class="sub-card">
-              <h3>2. حركة قذيفة أفقية</h3>
-              <p>المسار المنحني للقذيفة تحت تأثير الجاذبية.</p>
-              <div class="diagram-container">
-                <svg viewBox="0 0 300 200">
-                   <defs>
-                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
-                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
-                    </marker>
-                  </defs>
-                  <!-- Ground -->
-                  <line x1="0" y1="180" x2="300" y2="180" stroke="#64748b" stroke-width="2" />
-                  
-                  <!-- Axes -->
-                  <line x1="10" y1="10" x2="10" y2="180" class="svg-axis" /> <!-- Y -->
-                  <line x1="10" y1="180" x2="290" y2="180" class="svg-axis" /> <!-- X -->
-                  <text x="280" y="195" class="svg-label">x</text>
-                  <text x="0" y="20" class="svg-label">y</text>
-
-                  <!-- Trajectory Path -->
-                  <path id="projPath" d="M 10 20 Q 150 180 290 180" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="4" />
-
-                  <!-- Moving Ball -->
-                  <circle r="6" fill="#f59e0b" class="anim-object" style="offset-path: path('M 10 20 Q 150 180 290 180');" />
-                  
-                  <!-- Velocity Vector at a point (Static Example) -->
-                  <line x1="10" y1="20" x2="50" y2="20" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)" />
-                  <text x="20" y="15" class="svg-label">v₀</text>
-                </svg>
-              </div>
-               <div class="note" style="margin-top:0.5rem; background:#f1f5f9; border-color:#cbd5e1; color:#475569">
-                <span class="badge" style="background:#e2e8f0; color:#475569">تحليل</span> الحركة منتظمة على <span class="formula">x</span> ومتسارعة على <span class="formula">y</span>.
-              </div>
-            </div>
-          </div>
-
-          <!-- Diagram 3: Vector Decomposition (Oblique) -->
-           <div class="sub-card" style="margin-top: 1.5rem;">
-              <h3>3. تحليل السرعة (قذيفة مائلة)</h3>
-              <p>تحليل شعاع السرعة الابتدائية <span class="formula">⃗v₀</span> إلى مركبتين <span class="formula">v₀ₓ</span> و <span class="formula">v₀ᵧ</span>.</p>
-              <div class="diagram-container" style="max-width: 400px;">
-                <svg viewBox="0 0 300 250">
-                   <defs>
-                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
-                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
-                    </marker>
-                  </defs>
-
-                  <!-- Axes -->
-                  <line x1="20" y1="220" x2="280" y2="220" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)" /> <!-- X -->
-                  <line x1="20" y1="220" x2="20" y2="20" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)" /> <!-- Y -->
-
-                  <!-- Angle Arc -->
-                  <path d="M 70 220 A 50 50 0 0 0 60 170" fill="none" stroke="#64748b" stroke-width="1" />
-                  <text x="75" y="210" class="svg-label">α</text>
-
-                  <!-- Vx (Green) -->
-                  <line x1="20" y1="220" x2="120" y2="220" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)" />
-                  <text x="70" y="240" class="svg-label">v₀ₓ = v₀ cos α</text>
-
-                  <!-- Vy (Red) -->
-                  <line x1="120" y1="220" x2="120" y2="120" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" />
-                  <text x="125" y="170" class="svg-label">v₀ᵧ</text>
-
-                  <!-- V (Orange - Resultant) -->
-                  <line x1="20" y1="220" x2="120" y2="120" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)" />
-                  <text x="60" y="140" class="svg-label" fill="#f59e0b">⃗v₀</text>
-
-                  <!-- Origin -->
-                  <circle cx="20" cy="220" r="3" class="svg-point" />
-
-                </svg>
-              </div>
-            </div>
-        </section>
-
-        <!-- Projectile horizontal -->
-        <section id="proj-horizontal">
-          <h2><span class="icon">📐</span> 4- حركة قذيفة أفقية</h2>
-
-          <p>
-            نعتبر جسما يقذف أفقيا من ارتفاع <span class="formula">h</span> بسرعة ابتدائية:
-            <span class="formula">⃗v₀</span> أفقية (موازية للمحور <span class="formula">Ox</span>).
-          </p>
-
-          <h3>4-1 المميزات العامة</h3>
-          <ul>
-            <li>شعاع السرعة اللحظية <span class="formula">⃗v</span> يكون مماسًا للمسار.</li>
-            <li>الجسم خاضع لوزنه فقط (نهمل الاحتكاكات)، أي <span class="formula">⃗P = m⃗g</span>.</li>
-            <li>التسارع ثابت وموجه نحو الأسفل: <span class="formula">⃗a = ⃗g</span>.</li>
-          </ul>
-
-          <div class="grid-two">
-            <div class="sub-card">
-              <h3>4-2 الحركة على المحور <span class="formula">Ox</span></h3>
-              <ul>
-                <li>القوة لا تملك مركبة أفقية ⇒ لا يوجد تسارع أفقي.</li>
-                <li>الحركة على <span class="formula">Ox</span> حركة مستقيمة <strong>منتظمة</strong>.</li>
-                <li><span class="formula">vₓ(t) = v₀</span> (ثابت).</li>
-                <li><span class="formula">x(t) = v₀ · t</span> إذا كان <span class="formula">x₀ = 0</span>.</li>
-              </ul>
-            </div>
-            <div class="sub-card">
-              <h3>4-3 الحركة على المحور <span class="formula">Oy</span></h3>
-              <ul>
-                <li>القوة تملك مركبة عمودية فقط (الوزن).</li>
-                <li>الحركة على <span class="formula">Oy</span> سقوط حر (تسارع ثابت).</li>
-                <li><span class="formula">vᵧ(t) = −g · t</span> (إذا اعتبرنا الاتجاه نحو الأعلى موجبًا).</li>
-                <li><span class="formula">y(t) = h − (1/2) g t²</span>.</li>
-              </ul>
-            </div>
-          </div>
-
-          <p>
-            من تركيب الحركتين على <span class="formula">Ox</span> و <span class="formula">Oy</span>
-            نحصل على مسار منحنٍ على شكل <strong>قطع مكافئ</strong>.
-          </p>
-        </section>
-
-        <!-- Projectile oblique -->
-        <section id="proj-oblique">
-          <h2><span class="icon">🏹</span> 5- حركة قذيفة بسرعة ابتدائية مائلة</h2>
-
-          <p>
-            نقذف جسما من النقطة <span class="formula">O</span> بسرعة ابتدائية
-            <span class="formula">⃗v₀</span> تميل عن الأفق بزاوية
-            <span class="formula">α</span>.
-          </p>
-
-          <h3>5-1 مركبتا السرعة الابتدائية</h3>
-          <p>نحلل السرعة الابتدائية إلى مركبتين:</p>
-          <p>
-            <span class="formula">v₀ₓ = v₀ · cos(α)</span> (أفقية) <br />
-            <span class="formula">v₀ᵧ = v₀ · sin(α)</span> (عمودية)
-          </p>
-
-          <div class="grid-two">
-            <div class="sub-card">
-              <h3>5-2 الحركة على المحور <span class="formula">Ox</span></h3>
-              <ul>
-                <li>لا توجد قوة أفقية ⇒ لا يوجد تسارع أفقي.</li>
-                <li>الحركة على <span class="formula">Ox</span> مستقيمة <strong>منتظمة</strong>.</li>
-                <li><span class="formula">vₓ(t) = v₀ · cos(α) = ثابت</span>.</li>
-              </ul>
-            </div>
-            <div class="sub-card">
-              <h3>5-3 الحركة على المحور <span class="formula">Oy</span></h3>
-              <ul>
-                <li>الحركة عمودية هي حركة مستقيمة متغيرة بانتظام تحت تأثير الوزن.</li>
-                <li><span class="formula">vᵧ(t) = v₀ · sin(α) − g · t</span>.</li>
-                <li><span class="formula">y(t) = h + v₀ · sin(α) · t − (1/2) g t²</span>.</li>
-              </ul>
-            </div>
-          </div>
-
-          <h3>5-4 مراحل الحركة العمودية</h3>
-          <ul>
-            <li><strong>مرحلة الصعود:</strong> <span class="formula">vᵧ > 0</span> وتتناقص قيمته حتى تنعدم.</li>
-            <li><strong>أعلى نقطة (الذروة S):</strong> <span class="formula">vᵧ = 0</span>.</li>
-            <li><strong>مرحلة النزول:</strong> <span class="formula">vᵧ < 0</span> وقيمته المطلقة تتزايد.</li>
-          </ul>
-
-          <h3>5-5 سرعة الجسم في أي لحظة</h3>
-          <p>
-            سرعة الجسم اللحظية هي مركبة من مركبتين متعامدتين:
-            <span class="formula">v² = vₓ² + vᵧ²</span>.
-          </p>
-
-          <div class="note">
-            😀 خلاصة: حركة القذيفة (أفقية أو مائلة) هي تركيب بين حركة مستقيمة
-            منتظمة على المحور الأفقي، وحركة سقوط حر على المحور العمودي.
-          </div>
-        </section>
-
-        <!-- Activity: curvilinear instantaneous velocity -->
-        <section id="activity-curvilinear">
-          <h2><span class="icon">🧪</span> نشاط: تمثيل شعاع السرعة اللحظية على مسار منحنٍ</h2>
-
-          <p>
-            باستعمال التسجيل المتتالي لمواضع جسم يتحرك على مسار منحنٍ (الشكل (1) في
-            الوثيقة) نعلم أن:
-          </p>
-          <ul>
-            <li><span class="badge">سلم المسافات</span> <span class="formula">1 cm ⟶ 0.05 m</span></li>
-            <li><span class="badge">الزمن بين موضعين متتالين</span> <span class="formula">τ = 0.04 s</span></li>
-          </ul>
-
-          <h3>المطلوب على المخطط (الشكل 1):</h3>
-          <ol>
-            <li>احسب السرعة المتوسطة للجسم بين الموضعين <span class="formula">M₃</span> و <span class="formula">M₅</span>.</li>
-            <li>
-              مثّل شعاع السرعة اللحظية عند الموضع <span class="formula">M₃</span> باستعمال
-              سلم للسرعة مثل:
-              <span class="formula">1 cm ⟶ 1.5 m/s</span>.
-            </li>
-            <li>مثّل شعاع السرعة اللحظية عند الموضع <span class="formula">M₅</span> بنفس السلم.</li>
-            <li>باستعمال الطريقة السابقة، مثّل شعاع السرعة اللحظية عند الموضع <span class="formula">M₄</span>.</li>
-            <li>
-              من الشعاعين <span class="formula">⃗v₃</span> و <span class="formula">⃗v₅</span> مثّل شعاع تغير السرعة
-              <span class="formula">Δ⃗v₄</span> عند الموضع <span class="formula">M₄</span>.
-            </li>
-            <li>احسب قيمة <span class="formula">Δv₄</span> بوحدة <span class="formula">(m/s)</span>.</li>
-            <li>استنتج هل الحركة متسارعة أم متباطئة في هذا الجزء من المسار.</li>
-          </ol>
-
-          <p class="note">
-            ⚠️ في الأنشطة البيانية يُستعمل غالبًا السلم الخطي والمسافات المقاسة على
-            الشبكة فقط، دون حسابات جبرية معقدة.
-          </p>
-        </section>
-
-        <!-- Activity: circular Avistep -->
-        <section id="activity-circular">
-          <h2><span class="icon">🧪</span> نشاط: حركة دائرية منتظمة (Avistep)</h2>
-
-          <p>
-            باستعمال جهاز التسجيل الفوتوغرافي وبرمجية
-            <span class="badge">Avistep</span> نتابع حركة نقطة من حافة قرص
-            دوّار. تمّ تسجيل الوضعيات
-            <span class="formula">M₀, M₁, ..., M₁₁</span> على محيط دائرة كما في الشكل.
-          </p>
-
-          <ul>
-            <li><span class="badge">ثابت الزمن</span> <span class="formula">τ = 40 ms</span></li>
-            <li>كل موضعين متتاليين يفصل بينهما نفس الفاصل الزمني <span class="formula">τ</span>.</li>
-          </ul>
-
-          <h3>أسئلة النشاط:</h3>
-          <ol>
-            <li>قس طول نصف القطر <span class="formula">OM</span> باستعمال سلم المسافات المعطى.</li>
-            <li>استنتج نوع المسار الذي تتبعه النقطة.</li>
-            <li>
-              احسب الزمن الدوري <span class="formula">T</span> لحركة النقطة (كم يلزم من زمن
-              بين <span class="formula">M₀</span> وعودتها إلى موضعها).
-            </li>
-            <li>استنتج أن الحركة <strong>دائرية منتظمة</strong>.</li>
-            <li>
-              مثّل شعاع السرعة اللحظية عند بعض الوضعيات (مثلا
-              <span class="formula">M₃</span>, <span class="formula">M₆</span>, <span class="formula">M₉</span>)
-              مبينًا أنها مماسية للمسار وعمودية على نصف القطر.
-            </li>
-            <li>
-              استنتج اتجاه شعاع القوة المسببة للحركة (القوة المركزية) وعلاقته
-              بشعاع تغير السرعة <span class="formula">Δ⃗v</span>.
-            </li>
-          </ol>
-        </section>
-
-        <!-- Activity: projectile Avistep -->
-        <section id="activity-projectile">
-          <h2><span class="icon">🧪</span> نشاط: دراسة حركة قذفية (Avistep)</h2>
-
-          <p>
-            تُرمى كرة من ارتفاع <span class="formula">h ≈ 1.8 m</span> بسرعة ابتدائية
-            مائلة، وتُسجَّل مواضعها المتتالية باستعمال
-            <span class="badge">Avistep</span>.
-          </p>
-
-          <ul>
-            <li><span class="badge">ثابت الزمن</span> <span class="formula">τ = 0.2 s</span></li>
-            <li><span class="badge">سلم المسافات</span> <span class="formula">1 cm ⟶ 0.2 m</span></li>
-            <li>سرعة انطلاق تقريبية: <span class="formula">v₀ ≈ 18 m/s</span>.</li>
-          </ul>
-
-          <h3>أهم المطلوب في النشاط (بتصرف من الوثيقة):</h3>
-          <ol>
-            <li>وصف مراحل حركة الكرة (الصعود، الذروة، النزول).</li>
-            <li>
-              حساب قيم السرعة اللحظية عند بعض المواضع
-              <span class="formula">M₁, M₃, M₅, M₇, M₉</span> اعتمادًا على قياس
-              المسافات والزمن.
-            </li>
-            <li>تمثيل أشعة السرعة في هذه المواضع وفق سلم مناسب.</li>
-            <li>
-              تمثيل أشعة تغير السرعة <span class="formula">Δ⃗v</span> وملاحظة اتجاهها
-              بالنسبة لمحور <span class="formula">Oy</span>.
-            </li>
-            <li>
-              من التحليل المبياني، استنتاج أن الكرة خاضعة لقوة واحدة فقط (وزنها)
-              وأن الحركة قذفية تحت تأثير الجاذبية.
-            </li>
-            <li>تحديد المدى الأفقي للكرة (المسافة بين نقطة الانطلاق ونقطة السقوط).</li>
-          </ol>
-        </section>
-
-        <!-- Exercise 10 -->
-        <section id="exercise-10">
-          <h2><span class="icon">📝</span> تمرين 10: دراسة حركة جسم مقذوف أفقيا</h2>
-
-          <div class="exercise-title"><span>🎯</span> نص التمرين</div>
-          <p>
-            يُرمى جسم كتلته <span class="formula">m = 400 g</span> من نقطة
-            <span class="formula">A</span> بسرعة أفقية على مستوى
-            <span class="formula">(AB)</span>. بعد مغادرة الحافة يتابع الجسم حركته في
-            الهواء إلى أن يصل إلى الموضع <span class="formula">C</span> ثم
-            <span class="formula">D</span> كما في الوثيقة (منحنى المسار التجريبي).
-          </p>
-
-          <h3>I- دراسة حركة الجسم على الجزء الأفقي (AB)</h3>
-          <ol>
-            <li>مثّل القوى المؤثرة على الجسم وهو على المستوى الأفقي <span class="formula">AB</span>.</li>
-            <li>
-              بافتراض انعدام الاحتكاك على المستوى، ما هي طبيعة الحركة على
-              <span class="formula">AB</span>؟
-            </li>
-          </ol>
-
-          <h3>II- حركة الجسم بعد مغادرة الحافة</h3>
-          <p>
-            يغادر الجسم المستوى الأفقي عند النقطة <span class="formula">B</span> ليصبح
-            في حركة قذفية أفقية. عند اللحظة <span class="formula">tᵦ = 0.4 s</span> يمر
-            بالموضع <span class="formula">C</span>، وعند
-            <span class="formula">t𝒞 = 0.6 s</span> يمر بالموضع
-            <span class="formula">D</span>.
-          </p>
-          <ol>
-            <li>
-              اعتمادًا على التمثيل البياني للسرعة على المحورين
-              <span class="formula">Ox</span> و <span class="formula">Oy</span>:
-              <ul>
-                <li>حدد طبيعة الحركة على المحور <span class="formula">Ox</span>.</li>
-                <li>حدد طبيعة الحركة على المحور <span class="formula">Oy</span>.</li>
-              </ul>
-            </li>
-            <li>
-              استنتج قيمة سرعة الجسم <span class="formula">vᴅ</span> لحظة اصطدامه
-              بالأرض عند الموضع <span class="formula">D</span>.
-            </li>
-            <li>احسب ارتفاع الحافة <span class="formula">h</span> عن سطح الأرض.</li>
-            <li>
-              احسب المسافة الأفقية <span class="formula">d</span> التي تقطعها الكرة
-              بين الحافة ونقطة الاصطدام:
-              <ul>
-                <li>مرة بالاعتماد على محور <span class="formula">Ox</span>.</li>
-                <li>ومرة ثانية بالاعتماد على محور <span class="formula">Oy</span>.</li>
-              </ul>
-              ثم ناقش مما تتعلق هذه المسافة.
-            </li>
-          </ol>
-        </section>
-
-        <!-- Exercise 20 -->
-        <section id="exercise-20">
-          <h2><span class="icon">📝</span> تمرين 20: قذف مع مقاومة الهواء</h2>
-
-          <div class="exercise-title"><span>🎯</span> نص التمرين</div>
-          <p>
-            من نقطة <span class="formula">O</span> نقذف جسما بسرعة ابتدائية
-            <span class="formula">v₀ = 4 m/s</span> أفقيا. تُسجّل مواضع الجسم
-            <span class="formula">M₀, M₁, ..., M₈</span> بفاصل زمني ثابت
-            <span class="formula">τ = 0.1 s</span>، مع وجود مقاومة الهواء.
-          </p>
-
-          <ol>
-            <li>
-              مثّل شعاع السرعة <span class="formula">⃗v</span> عند الموضع
-              <span class="formula">M₄</span> باستعمال سلم مناسب، مع تفكيكه إلى
-              مركبتيه <span class="formula">⃗vₓ</span> و <span class="formula">⃗vᵧ</span>.
-            </li>
-            <li>بيّن أن الحركة على المحور الأفقي ليست منتظمة (بسبب مقاومة الهواء).</li>
-            <li>احسب المسافة الأفقية بين <span class="formula">M₀</span> و <span class="formula">M₈</span>.</li>
-            <li>استنتج كيف تؤثر مقاومة الهواء على مدى القذيفة مقارنة بحالة الإهمال.</li>
-          </ol>
-        </section>
-
-        <!-- Exercise 06 -->
-        <section id="exercise-6">
-          <h2><span class="icon">📝</span> تمرين 06: تحليل بيان السرعة لمقذوف</h2>
-
-          <div class="exercise-title"><span>📊</span> معطيات التمرين</div>
-          <p>
-            يوضح الشكل (المرفق في الوثيقة الأصلية) مسار كرة مقذوفة بحركة
-            قذفية مائلة، مع تمثيل
-            <span class="formula">vₓ(t)</span> و <span class="formula">vᵧ(t)</span>
-            على محور الزمن.
-          </p>
-
-          <ol>
-            <li>
-              بالاعتماد على بيان <span class="formula">vₓ(t)</span>، استنتج طبيعة
-              الحركة على المحور <span class="formula">Ox</span> وقيمة
-              <span class="formula">v₀ₓ</span>.
-            </li>
-            <li>
-              بالاعتماد على بيان <span class="formula">vᵧ(t)</span>:
-              <ul>
-                <li>استنتج قيمة التسارع <span class="formula">g</span> تقريبيا.</li>
-                <li>حدد زمن بلوغ الكرة أعلى نقطة في مسارها.</li>
-              </ul>
-            </li>
-            <li>
-              استنتج من البيانيْن قيمة السرعة الابتدائية
-              <span class="formula">v₀</span> وزاوية القذف <span class="formula">α</span>.
-            </li>
-          </ol>
-        </section>
-
-        <!-- Exercise 01 from series -->
-        <section id="exercise-01">
-          <h2><span class="icon">📝</span> تمرين 01: دراسة حركة جسم على المسار ABCD</h2>
-
-          <p class="tag">سلسلة تمارين الوحدة 03 – القوة والحركات المنحنية</p>
-
-          <div class="exercise-title"><span>🎯</span> نص التمرين</div>
-          <p>
-            نترك جسما صلبا <span class="formula">S</span> من الموضع
-            <span class="formula">A</span> بدون سرعة ابتدائية، فيتحرك على مسار
-            <span class="formula">ABCD</span> كما هو موضح في الشكل (1).
-          </p>
-          <p>
-            بواسطة جهاز خاص نمثل منحنى تغير سرعة الجسم
-            <span class="formula">v = f(t)</span> على الجزء
-            <span class="formula">AC</span> كما في الشكل (2). تهمل جميع الاحتكاكات.
-          </p>
-
-          <h3>I- على الجزء <span class="formula">AB</span></h3>
-          <ol>
-            <li>مثّل القوى المؤثرة على الجسم <span class="formula">S</span> وهو على المسار <span class="formula">AB</span>.</li>
-            <li>
-              حدد أطوار الحركة على <span class="formula">AB</span> باستعمال
-              منحنى <span class="formula">v = f(t)</span>:
-              <ul>
-                <li>طور تتزايد فيه السرعة.</li>
-                <li>طور تكون فيه السرعة ثابتة (إن وجد).</li>
-                <li>طور تتناقص فيه السرعة (إن وجد).</li>
-              </ul>
-            </li>
-            <li>استنتج طبيعة الحركة في كل طور (متسارعة، منتظمة، متباطئة).</li>
-            <li>هل يخضع الجسم لقوة على هذا الجزء من المسار؟ علّل.</li>
-          </ol>
-
-          <h3>II- حساب المسافات على <span class="formula">AB</span> و <span class="formula">BC</span></h3>
-          <p>
-            بالاعتماد على منحنى السرعة <span class="formula">v = f(t)</span>، تكون
-            المسافة المقطوعة على جزء من المسار مساوية لمساحة الجزء المقابل تحت
-            المنحنى.
-          </p>
-          <ol>
-            <li>احسب المسافة <span class="formula">AB</span>.</li>
-            <li>احسب المسافة <span class="formula">BC</span>.</li>
-          </ol>
-
-          <h3>III- الحركة بعد النقطة <span class="formula">C</span></h3>
-          <p>
-            يغادر الجسم المستوى الأفقي عند الموضع <span class="formula">C</span>
-            ليسقط في الموضع <span class="formula">D</span>. يمثل الشكلان (3) و(4)
-            تغيرات السرعة اللحظية على المحورين
-            <span class="formula">Ox</span> و <span class="formula">Oy</span>.
-          </p>
-
-          <ol>
-            <li>
-              حدد طبيعة الحركة على المحور <span class="formula">Ox</span> وعلى
-              المحور <span class="formula">Oy</span> مع التعليل.
-            </li>
-            <li>
-              استنتج قيمة سرعة الجسم <span class="formula">vᴅ</span> لحظة ارتطامه
-              بالأرض.
-            </li>
-            <li>احسب ارتفاع الحافة <span class="formula">h</span> عن الأرض.</li>
-            <li>
-              احسب المسافة الأفقية <span class="formula">d</span> بطريقتين مختلفتين
-              (من خلال <span class="formula">Ox</span> ثم <span class="formula">Oy</span>)،
-              ثم ناقش مما تتعلق هذه المسافة.
-            </li>
-          </ol>
-        </section>
-
-        <!-- Exercise 23 shot put -->
-        <section id="exercise-23">
-          <h2><span class="icon">🏅</span> تمرين 23: رمي الجلة في بطولة العالم</h2>
-
-          <div class="exercise-title"><span>🎯</span> نص التمرين</div>
-          <p>
-            خلال البطولة العالمية لألعاب القوى التي جرت فعالياتها بباريس في شهر
-            أوت من سنة 2003، استطاع بطل الدورة في رمي الجلة
-            <strong>أندري ميخنفيتش</strong> أن يحقق رمية لمسافة:
-            <span class="formula">d = 21.69 m</span>.
-          </p>
-
-          <p>
-            أراد مدرب أحد منافسيه أن يدرس هذه الرمية، إذ أنه حصل على معلومات
-            تتعلق بـ:
-          </p>
-          <ul>
-            <li>السرعة الابتدائية للجلة: <span class="formula">v₀ =13.7 m/s</span></li>
-            <li>زاوية الرمي بالنسبة للأفق: <span class="formula">α = 43°</span></li>
-            <li>ارتفاع الجلة لحظة الرمي: <span class="formula">h = 2.62 m</span></li>
-          </ul>
-          <p>قِيست هذه القيم بواسطة جهاز لقياس السرعة والارتفاع.</p>
-
-          <h3>1- استغلال المعطيات</h3>
-          <ol>
-            <li>
-              اعتمادًا على المعطيات، أوجد مركبتي السرعة الابتدائية للجلة:
-              <span class="formula">v₀ₓ</span> و <span class="formula">v₀ᵧ</span>.
-            </li>
-            <li>
-              حدّد لحظة بلوغ الكرة ذروتها (أعلى نقطة) مع التعليل انطلاقًا من
-              تعبير <span class="formula">vᵧ(t)</span>.
-            </li>
-          </ol>
-
-          <h3>2- التحقق من توافق المعطيات</h3>
-          <p>
-            بالانطلاق من النتائج المتحصل عليها، تحقق أن قيمتي السرعة الابتدائية
-            <span class="formula">v₀</span> وزاوية الرمي <span class="formula">α</span>
-            متوافقتان مع القيم المعطاة في نص التمرين (أي أن الحسابات تعطي نفس
-            <span class="formula">d</span> تقريبًا).
-          </p>
-
-          <h3>3- تأثير السرعة الابتدائية وزاوية الرمي</h3>
-          <p>
-            يريد المدرب معرفة العوامل التي يجب التركيز عليها لتحسين أداء الرياضي،
-            فقرر دراسة تأثير السرعة الابتدائية <span class="formula">v₀</span> وزاوية
-            الرمي <span class="formula">α</span> على المسافة الأفقية
-            <span class="formula">d</span>.
-          </p>
-
-          <table class="mcq-table">
-            <thead>
-              <tr>
-                <th>زاوية الرمي ثابتة</th>
-                <th>السرعة الابتدائية ثابتة</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  عندما تتزايد <span class="formula">α</span> فإن المسافة
-                  <span class="formula">d</span> للرمية:
-                  <ul>
-                    <li>تتزايد.</li>
-                    <li>تتناقص.</li>
-                    <li>تبقى نفسها.</li>
-                    <li>تتزايد، تمر بقيمة عظمى ثم تتناقص.</li>
-                    <li>تتناقص، تمر بقيمة صغرى ثم تتزايد.</li>
-                  </ul>
-                </td>
-                <td>
-                  عندما تتزايد <span class="formula">v₀</span> فإن المسافة
-                  <span class="formula">d</span> للرمية:
-                  <ul>
-                    <li>تتزايد.</li>
-                    <li>تتناقص.</li>
-                    <li>تبقى نفسها.</li>
-                    <li>تتزايد، تمر بقيمة عظمى ثم تتناقص.</li>
-                    <li>تتناقص، تمر بقيمة صغرى ثم تتزايد.</li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p class="note">
-            🧐 المطلوب من التلميذ اختيار الاقتراح الصحيح في كل حالة، مع التعليل
-            الفيزيائي اعتمادًا على معادلات حركة القذيفة.
-          </p>
-        </section>
-
-      </div>
-    </main>
-  </div>
-
-  <footer style="padding: 2rem; text-align: center;">
-    <div style="max-width: 800px; margin: 0 auto;">
-        <div style="margin-top: 2rem; border-top: 1px dashed #cbd5e1; padding-top: 1rem; font-size: 0.85rem; color: #94a3b8;">
-            &copy; 2026 جميع الحقوق محفوظة. تم التصميم بواسطة <strong>فارس بريكات</strong>.
         </div>
-    </div>
-  </footer>
+    </section>
 
-  <button class="top-btn" id="topBtn" aria-label="الرجوع للأعلى">⬆️</button>
-</div>
+    <section class="team-section" id="team">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>التشكيلة الأساسية</h2>
+            </div>
 
-<script>
-  (function () {
-    const links = Array.from(document.querySelectorAll(".nav-link"));
-    const sections = Array.from(document.querySelectorAll("main section"));
-    const topBtn = document.getElementById("topBtn");
+            <!-- المدرب -->
+            <div class="coach-card reveal">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" alt="المدرب" class="coach-img">
+                <h3 style="font-size:1.5rem; color:var(--primary-green); font-weight:800;">بقة المسعود</h3>
+                <p style="color:var(--primary-red); font-weight:700;">المدرب الرئيسي</p>
+            </div>
 
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+            <div class="players-grid reveal">
+                
+                <!-- 1. عمرون ساعد (حارس) -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1517747614396-d21a78b850e8?auto=format&fit=crop&q=80&w=400" alt="عمرون ساعد" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">16</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">عمرون ساعد</div>
+                        <div class="player-pos">حارس مرمى</div>
+                    </div>
+                </div>
 
-    links.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const target = btn.getAttribute("data-target");
-        scrollToSection(target);
-      });
-    });
+                <!-- 2. جاب الله اسماعيل -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1628217126479-40340123a918?auto=format&fit=crop&q=80&w=400" alt="جاب الله اسماعيل" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">13</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">جاب الله اسماعيل</div>
+                        <div class="player-pos">مدافع</div>
+                    </div>
+                </div>
 
-    // Highlight active section while scrolling
-    const main = document.querySelector("main");
-    main.addEventListener("scroll", () => {
-      const fromTop = main.scrollTop + 120;
+                <!-- 3. قوماري محمد -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&q=80&w=400" alt="قوماري محمد" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">04</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">قوماري محمد</div>
+                        <div class="player-pos">مدافع</div>
+                    </div>
+                </div>
 
-      sections.forEach((sec) => {
-        const rect = sec.getBoundingClientRect();
-        const top = rect.top + main.scrollTop;
-        const bottom = top + sec.offsetHeight;
-        const id = sec.id;
+                <!-- 4. بن تركية محمد (القائد) -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=400" alt="بن تركية محمد" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">05</div>
+                        <div class="captain-badge"><i class="fa-solid fa-c"></i></div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">بن تركية محمد</div>
+                        <div class="player-pos">قائد ©</div>
+                    </div>
+                </div>
 
-        if (fromTop >= top && fromTop < bottom) {
-          links.forEach((l) =>
-            l.classList.toggle("active", l.getAttribute("data-target") === id)
-          );
+                <!-- 5. شارف يونس -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=400" alt="شارف يونس" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">03</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">شارف يونس</div>
+                        <div class="player-pos">مدافع</div>
+                    </div>
+                </div>
+
+                <!-- 6. زكار صلاح -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=400" alt="زكار صلاح" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">06</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">زكار صلاح</div>
+                        <div class="player-pos">وسط</div>
+                    </div>
+                </div>
+
+                <!-- 7. ايت محمد الياس -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&q=80&w=400" alt="ايت محمد الياس" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">20</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">ايت محمد الياس</div>
+                        <div class="player-pos">وسط</div>
+                    </div>
+                </div>
+
+                <!-- 8. دنيدينة مصطفى -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1599586120429-482850b6d179?auto=format&fit=crop&q=80&w=400" alt="دنيدينة مصطفى" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">14</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">دنيدينة مصطفى</div>
+                        <div class="player-pos">وسط</div>
+                    </div>
+                </div>
+
+                <!-- 9. سالت اسلام -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1522778119026-d647f0566c5a?auto=format&fit=crop&q=80&w=400" alt="سالت اسلام" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">05</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">سالت اسلام</div>
+                        <div class="player-pos">وسط</div>
+                    </div>
+                </div>
+
+                <!-- 10. خذير محمد (تم تحديث الصورة) -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://z-cdn-media.chatglm.cn/files/a711e619-3796-4c20-a2b3-f1098c6f3b0d.jpg?auth_key=1869797745-00106b88bd8c4a27b42f3e94cf697444-0-e9ac4f4f86247e5b087e6261137349f1" alt="خذير محمد" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">11</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">خذير محمد</div>
+                        <div class="player-pos">مهاجم</div>
+                    </div>
+                </div>
+
+                <!-- 11. عبدوني سليم -->
+                <div class="player-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1558098263-73a83bab9b0c?auto=format&fit=crop&q=80&w=400" alt="عبدوني سليم" class="card-img">
+                        <div class="image-overlay"></div>
+                        <div class="player-number-badge">07</div>
+                    </div>
+                    <div class="player-body">
+                        <div class="player-name">عبدوني سليم</div>
+                        <div class="player-pos">مهاجم</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- الاحتياط -->
+            <h3 class="reveal" style="text-align: center; font-size: 2rem; color: var(--text-dark); margin-bottom: 30px; font-weight: 800;">الاحتياطيون</h3>
+            <div class="subs-container reveal">
+                <div class="sub-item"><div class="sub-avatar">RI</div><div class="sub-name">رفيق ابراهيم</div></div>
+                <div class="sub-item"><div class="sub-avatar">CT</div><div class="sub-name">شنافي توفيق</div></div>
+                <div class="sub-item"><div class="sub-avatar">SK</div><div class="sub-name">سبع خيرالدين</div></div>
+                <div class="sub-item"><div class="sub-avatar">AA</div><div class="sub-name">عيدة عبدالحفيظ</div></div>
+                <div class="sub-item"><div class="sub-avatar">AZ</div><div class="sub-name">عسلي زكرياء</div></div>
+                <div class="sub-item"><div class="sub-avatar">SN</div><div class="sub-name">سعدات ناجي</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="matches-section" id="matches">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 style="color: #ffffff; border-color: var(--accent-gold);">الموعد القادم</h2>
+            </div>
+            <div class="match-card reveal">
+                <div class="match-date">
+                    <span class="day">25</span>
+                    <span class="month">أكتوبر</span>
+                </div>
+                <div class="match-teams">
+                    <div class="team">
+                        <img src="https://z-cdn-media.chatglm.cn/files/05a5ae9c-1675-4daa-8dd3-b152a08ff9bb.png?auth_key=1869795604-35aaf36f8dd94143af186940b4da6629-0-b0521b3a9dd61cabcb21fff45571a33d" alt="شعار MC HBB" class="team-logo-img">
+                        <div class="team-name">حاسي بحبح</div>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="team">
+                        <img src="https://ui-avatars.com/api/?name=OPP&background=ffffff&color=006233&size=128" alt="الضيف" class="team-logo-img">
+                        <div class="team-name">المنافس</div>
+                    </div>
+                </div>
+                <div class="match-info">
+                    <p><i class="fa-regular fa-clock"></i> 16:00 مساءً</p>
+                    <p><i class="fa-solid fa-location-dot"></i> ملعب بلدية حاسي بحبح</p>
+                    <p><i class="fa-solid fa-trophy"></i> الدوري المحلي - الجولة 5</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-logo">
+                <i class="fa-solid fa-fan"></i> MC HBB <span>1992</span>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+            <div style="text-align: center; margin-top: 30px; font-size: 0.8rem; color: #555;">
+                جميع الحقوق محفوظة &copy; 2023 نادي مولودية حاسي بحبح
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
         }
-      });
-
-      if (main.scrollTop > 300) {
-        topBtn.classList.add("visible");
-      } else {
-        topBtn.classList.remove("visible");
-      }
-    });
-
-    topBtn.addEventListener("click", () => {
-      document.querySelector("main").scrollTo({ top:0, behavior: "smooth" });
-    });
-  })();
-</script>
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+        window.addEventListener('scroll', reveal);
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        reveal();
+    </script>
 </body>
 </html>
