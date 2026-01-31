@@ -1,565 +1,211 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولودية حاسي بحبح - الأسطورة</title>
-    
-    <!-- خطوط عربية وأيقونات -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولودية حاسي بحبح - الأسطورة</title>
 
-    <style>
-        /* --- متغيرات الألوان --- */
-        :root {
-            --primary-green: #006233; 
-            --dark-green: #004d26;
-            --primary-red: #D21034;   
-            --accent-gold: #FFD700;
-            --text-dark: #1a1a1a;
-            --bg-light: #f8f9fa;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+<!-- Fonts & Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* --- الإعدادات العامة --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        html { font-size: 16px; } /* الحجم الأساسي */
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.5; /* تقليل ارتفاع السطر قليلاً */
-            overflow-x: hidden;
-        }
-        a { text-decoration: none; color: inherit; transition: var(--transition); }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
-        .container { width: 92%; max-width: 1300px; margin: 0 auto; padding: 0 10px; }
+<style>
+:root{
+--primary-green:#006233;
+--dark-green:#004d26;
+--primary-red:#D21034;
+--accent-gold:#FFD700;
+--text-dark:#1a1a1a;
+--bg-light:#f8f9fa;
+--transition:all .4s ease;
+}
 
-        /* --- تأثيرات الظهور --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{
+font-family:'Cairo',sans-serif;
+background:var(--bg-light);
+color:var(--text-dark);
+line-height:1.6;
+overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+.container{width:92%;max-width:1300px;margin:auto}
 
-        /* --- الهيدر --- */
-        header {
-            position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            height: 70px; /* تقليل ارتفاع الهيدر */
-        }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 100%; }
-        
-        .logo {
-            font-size: 1.4rem; font-weight: 900; color: var(--primary-green);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .logo span { color: var(--primary-red); }
-        .logo i { animation: spin-slow 10s linear infinite; font-size: 0.9em; }
+/* Reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:.6s}
+.reveal.active{opacity:1;transform:none}
 
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); position: relative; }
-        .nav-links a::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; right: 0;
-            background: linear-gradient(90deg, var(--primary-green), var(--primary-red)); transition: var(--transition);
-        }
-        .nav-links a:hover { color: var(--primary-green); }
-        .nav-links a:hover::after { width: 100%; }
+/* Header */
+header{
+position:fixed;top:0;width:100%;height:70px;
+background:#fff;z-index:1000;
+box-shadow:0 2px 10px rgba(0,0,0,.05)
+}
+.nav-container{
+height:100%;display:flex;
+align-items:center;justify-content:space-between
+}
+.logo{font-size:1.4rem;font-weight:900;color:var(--primary-green)}
+.logo span{color:var(--primary-red)}
+.nav-links{display:flex;gap:25px}
+.nav-links a{font-weight:700}
+.cta-btn{
+background:linear-gradient(135deg,var(--primary-green),var(--dark-green));
+color:#fff;padding:8px 20px;border-radius:50px;font-size:.85rem
+}
+.mobile-menu-btn{display:none;font-size:1.5rem;color:var(--primary-green)}
 
-        .cta-btn {
-            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-            color: #ffffff; padding: 8px 20px; border-radius: 50px;
-            font-weight: 800; border: 2px solid transparent;
-            font-size: 0.85rem;
-        }
-        .cta-btn:hover {
-            background: #ffffff; color: var(--primary-green); border-color: var(--primary-green);
-        }
-        .mobile-menu-btn { display: none; font-size: 1.5rem; cursor: pointer; color: var(--primary-green); }
+/* Hero */
+.hero{
+min-height:80vh;
+background:
+linear-gradient(rgba(0,20,10,.85),rgba(0,20,10,.9)),
+url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1920&q=80')
+center/cover no-repeat fixed;
+display:flex;align-items:center;text-align:center;
+padding-top:80px;color:#fff
+}
+.hero h1{font-size:2.8rem;font-weight:900}
+.btn-hero{
+display:inline-block;margin-top:15px;
+background:var(--primary-red);
+padding:10px 30px;border-radius:50px
+}
 
-        /* --- هيرو --- */
-        .hero {
-            height: 75vh; /* تقليل ارتفاع الهيرو */
-            background: linear-gradient(rgba(0, 20, 10, 0.8), rgba(0, 20, 10, 0.9)),
-                        url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat fixed;
-            display: flex; align-items: center; text-align: center; color: #ffffff;
-            padding-top: 70px;
-        }
-        .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 0 15px; }
-        .hero h1 {
-            font-size: 2.8rem; font-weight: 900; margin-bottom: 15px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            background: linear-gradient(to right, #fff, #ddd);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            line-height: 1.1;
-        }
-        .btn-hero {
-            padding: 10px 30px; font-size: 0.95rem; border-radius: 50px;
-            background: var(--primary-red); color: white; font-weight: bold;
-            box-shadow: 0 5px 15px rgba(210, 16, 52, 0.4); display: inline-block;
-            margin-top: 15px;
-        }
-        .btn-hero:hover { transform: scale(1.05); background: #ff2e4d; }
+/* Sections */
+section{padding:40px 0}
 
-        /* --- قسم الهوية --- */
-        .identity-section { padding: 40px 0; position: relative; }
-        .identity-card {
-            background: #ffffff; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1); transform: rotate(-1deg); transition: var(--transition);
-        }
-        .identity-card:hover { transform: rotate(0deg) scale(1.01); }
-        .identity-text { padding: 20px; }
-        .identity-text h2 { font-size: 1.6rem; color: var(--primary-green); margin-bottom: 10px; font-weight: 900; }
+/* Team */
+.players-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:15px
+}
+.player-card{
+background:#fff;border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.08)
+}
+.card-image-wrapper{height:200px;overflow:hidden}
+.card-img{width:100%;height:100%;object-fit:cover}
+.player-body{text-align:center;padding:12px}
+.player-name{font-weight:800}
+.player-pos{font-size:.75rem;color:var(--primary-green)}
 
-        /* --- قسم الفريق --- */
-        .team-section { padding: 40px 0; background-color: #f0f4f1; }
-        .section-title { text-align: center; margin-bottom: 30px; }
-        .section-title h2 {
-            font-size: 2rem; color: var(--primary-green); font-weight: 900;
-            display: inline-block; position: relative; padding-bottom: 10px;
-        }
-        .section-title h2::after {
-            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 60px; height: 4px; background: var(--primary-red); border-radius: 10px;
-        }
+/* Matches */
+.matches-section{
+background:var(--primary-green);color:#fff
+}
+.match-card{
+background:rgba(255,255,255,.1);
+border-radius:15px;
+padding:20px;
+display:flex;flex-direction:column;
+align-items:center;text-align:center
+}
 
-        /* المدرب */
-        .coach-card {
-            background: #ffffff; border-radius: 15px; padding: 20px;
-            max-width: 350px; margin: 0 auto 30px; text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-top: 5px solid var(--primary-red);
-        }
-        .coach-img {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            margin: 0 auto 10px; border: 4px solid var(--primary-green); padding: 2px;
-        }
-        .coach-card h3 { font-size: 1.2rem; }
-        .coach-card p { font-size: 0.9rem; }
+/* Footer */
+footer{
+background:#111;color:#888;
+padding:30px 0;text-align:center
+}
 
-        /* --- تصميم بطاقة اللاعب (مضغوط) --- */
-        .players-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;
-        }
-        .player-card {
-            background: #ffffff; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: var(--transition);
-            position: relative; text-align: center; border: 1px solid rgba(0,0,0,0.05);
-        }
-        .player-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 98, 51, 0.2);
-            border-color: var(--primary-green);
-        }
+/* ================= MOBILE ================= */
 
-        .card-image-wrapper {
-            height: 200px; overflow: hidden; position: relative;
-            background: #e0e0e0;
-        }
-        .card-img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-        .player-card:hover .card-img { transform: scale(1.1); }
+@media(max-width:768px){
+html{font-size:14px}
+.hero{background-attachment:scroll;padding:100px 0 40px}
+.hero h1{font-size:2rem}
+.players-grid{grid-template-columns:repeat(2,1fr)}
+.mobile-menu-btn{display:block}
+.nav-links{
+position:fixed;top:70px;right:-100%;
+flex-direction:column;background:#fff;
+width:100%;padding:20px;text-align:center;
+transition:.4s
+}
+.nav-links.active{right:0}
+}
 
-        .image-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 50%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            pointer-events: none;
-        }
+@media(max-width:480px){
+html{font-size:13px}
+.players-grid{grid-template-columns:1fr}
+.hero h1{font-size:1.6rem}
+}
 
-        .player-number-badge {
-            position: absolute; top: 8px; right: 8px;
-            width: 32px; height: 32px;
-            background: var(--primary-red); color: white;
-            border-radius: 50%; border: 2px solid white;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; font-weight: 900; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .captain-badge {
-            position: absolute; top: 8px; left: 8px;
-            width: 28px; height: 28px; background: var(--accent-gold); color: var(--primary-green);
-            border-radius: 50%; border: 2px solid white;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem; box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 2;
-        }
-
-        .player-body { padding: 12px; position: relative; z-index: 2; background: #ffffff; margin-top: -15px; border-radius: 12px 12px 0 0; }
-        .player-name { font-size: 1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 3px; }
-        .player-pos { font-size: 0.75rem; font-weight: 600; color: var(--primary-green); text-transform: uppercase; }
-
-        /* الاحتياط */
-        .subs-container { background: #ffffff; border-radius: 15px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-right: 4px solid var(--primary-green); }
-        .sub-item { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px dashed #ddd; }
-        .sub-item:last-child { border-bottom: none; }
-        .sub-avatar { width: 30px; height: 30px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; margin-left: 10px; font-size: 0.8rem; }
-        .sub-name { font-size: 0.95rem; font-weight: 700; }
-
-        /* المباريات */
-        .matches-section {
-            background: var(--primary-green); padding: 40px 0; color: white; position: relative; overflow: hidden;
-        }
-        .match-card {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px; padding: 20px 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .match-date { background: #ffffff; color: var(--primary-green); padding: 8px; border-radius: 10px; text-align: center; min-width: 70px; margin-bottom: 0; }
-        .match-date .day { font-size: 1.5rem; font-weight: 900; line-height: 1; color: var(--primary-red); }
-        .match-date .month { font-size: 0.8rem; font-weight: 700; }
-        
-        .match-teams { display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center; width: 100%; }
-        .team-logo-img { width: 60px; height: 60px; background: #ffffff; border-radius: 50%; padding: 5px; object-fit: contain; }
-        .vs { font-size: 1.5rem; font-weight: 900; color: var(--accent-gold); font-style: italic; }
-        
-        .match-info { text-align: center; width: 100%; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.3); font-size: 0.8rem; }
-        .match-info p { margin-bottom: 2px; }
-
-        /* الفوتر */
-        footer { background-color: #111; color: #888; padding: 30px 0 15px; border-top: 4px solid var(--primary-red); text-align: center; }
-        .footer-logo { font-size: 1.4rem; font-weight: 900; color: #ffffff; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
-        .social-icons a { width: 30px; height: 30px; background: rgba(255,255,255,0.1); color: #ffffff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 5px; transition: 0.3s; font-size: 0.9rem; }
-        .social-icons a:hover { background: var(--primary-green); }
-
-        /* --- استجابة الشاشات (Media Queries) --- */
-        
-        @media (max-width: 900px) {
-            .nav-links { 
-                position: fixed; top: 70px; right: -100%; width: 100%; background: #ffffff; 
-                flex-direction: column; padding: 20px; transition: 0.4s; 
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center;
-            }
-            .nav-links.active { right: 0; }
-            .mobile-menu-btn { display: block; }
-            .match-card { flex-direction: column; }
-        }
-
-        @media (max-width: 768px) {
-            /* جعل الخطوط والمكونات أصغر */
-            html { font-size: 14px; }
-            .container { width: 95%; }
-            
-            .hero h1 { font-size: 2rem; }
-            
-            /* شبكة اللاعبين */
-            .players-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .card-image-wrapper { height: 160px; } /* صور أصغر */
-            .player-body { padding: 8px; margin-top: -10px; }
-            .player-name { font-size: 0.9rem; }
-            .player-pos { font-size: 0.7rem; }
-            
-            .section-title h2 { font-size: 1.6rem; }
-            
-            /* المباريات */
-            .match-card { padding: 15px 10px; }
-            .team-logo-img { width: 50px; height: 50px; }
-            .vs { font-size: 1.2rem; }
-        }
-
-        @media (max-width: 480px) {
-            html { font-size: 13px; }
-            .hero h1 { font-size: 1.6rem; }
-            .btn-hero { padding: 8px 20px; font-size: 0.85rem; }
-            
-            /* شبكة اللاعبين */
-            .players-grid { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto 30px; }
-            .card-image-wrapper { height: 180px; }
-            
-            .identity-card { transform: none; }
-        }
-
-        @keyframes spin-slow { 100% { transform: rotate(360deg); } }
-    </style>
+/* Touch UX */
+a,button{-webkit-tap-highlight-color:transparent}
+</style>
 </head>
+
 <body>
 
-    <header id="navbar">
-        <div class="container nav-container">
-            <a href="#" class="logo">
-                <i class="fa-solid fa-fan"></i> MC HBB <span>1992</span>
-            </a>
-            <nav>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#hero">الرئيسية</a></li>
-                    <li><a href="#about">النادي</a></li>
-                    <li><a href="#team">التشكيلة</a></li>
-                    <li><a href="#matches">المباريات</a></li>
-                    <li><a href="#contact" class="cta-btn">تواصل</a></li>
-                </ul>
-            </nav>
-            <div class="mobile-menu-btn" onclick="toggleMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-        </div>
-    </header>
+<header>
+<div class="container nav-container">
+<div class="logo">MC HBB <span>1992</span></div>
+<ul class="nav-links" id="navLinks">
+<li><a href="#hero">الرئيسية</a></li>
+<li><a href="#team">التشكيلة</a></li>
+<li><a href="#matches">المباريات</a></li>
+<li><a class="cta-btn" href="#contact">تواصل</a></li>
+</ul>
+<div class="mobile-menu-btn" onclick="toggleMenu()">
+<i class="fa-solid fa-bars"></i>
+</div>
+</div>
+</header>
 
-    <section class="hero" id="hero">
-        <div class="container hero-content reveal active">
-            <h1>مولودية حاسي بحبح<br>الأسطورة تتكلم</h1>
-            <p>شعارنا الأخضر، ودماؤنا الحمراء. نمثل الفخر والعزيمة.</p>
-            <a href="#team" class="btn-hero">شاهد التشكيلة</a>
-        </div>
-    </section>
+<section class="hero" id="hero">
+<div class="container reveal active">
+<h1>مولودية حاسي بحبح<br>الأسطورة تتكلم</h1>
+<a href="#team" class="btn-hero">شاهد التشكيلة</a>
+</div>
+</section>
 
-    <section class="identity-section" id="about">
-        <div class="container reveal">
-            <div class="identity-card">
-                <img src="https://z-cdn-media.chatglm.cn/files/bde9bc95-4819-4eae-b8c7-422fba0798d4.png?auth_key=1869793138-23900df9fba24bf3898be9df33f3b90c-0-93a96ce75b474a5f0215a4e6ae2a016f" alt="غلاف النادي">
-                <div class="identity-text">
-                    <h2>أكثر من مجرد نادي</h2>
-                    <p>نحن جماعة متحدة تحت راية الطاحونة، نمثل تراثاً عريقاً ومستقبلاً واعداً.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="team">
+<div class="container">
+<div class="players-grid reveal">
+<div class="player-card">
+<div class="card-image-wrapper">
+<img class="card-img" src="https://images.unsplash.com/photo-1517747614396-d21a78b850e8">
+</div>
+<div class="player-body">
+<div class="player-name">عمرون ساعد</div>
+<div class="player-pos">حارس مرمى</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-    <section class="team-section" id="team">
-        <div class="container">
-            <div class="section-title reveal">
-                <h2>التشكيلة الأساسية</h2>
-            </div>
+<section class="matches-section" id="matches">
+<div class="container">
+<div class="match-card reveal">
+<h3>الموعد القادم</h3>
+<p>25 أكتوبر – 16:00</p>
+<p>ملعب بلدية حاسي بحبح</p>
+</div>
+</div>
+</section>
 
-            <!-- المدرب -->
-            <div class="coach-card reveal">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" alt="المدرب" class="coach-img">
-                <h3 style="font-size:1.4rem; color:var(--primary-green); font-weight:800;">بقة المسعود</h3>
-                <p style="color:var(--primary-red); font-weight:700;">المدرب الرئيسي</p>
-            </div>
+<footer id="contact">
+<p>© 2023 مولودية حاسي بحبح</p>
+</footer>
 
-            <div class="players-grid reveal">
-                
-                <!-- 1. عمرون ساعد (حارس) -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1517747614396-d21a78b850e8?auto=format&fit=crop&q=80&w=400" alt="عمرون ساعد" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">16</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">عمرون ساعد</div>
-                        <div class="player-pos">حارس مرمى</div>
-                    </div>
-                </div>
+<script>
+function toggleMenu(){
+document.getElementById("navLinks").classList.toggle("active")
+}
+window.addEventListener("scroll",()=>{
+document.querySelectorAll(".reveal").forEach(el=>{
+if(el.getBoundingClientRect().top<window.innerHeight-100){
+el.classList.add("active")
+}
+})
+})
+</script>
 
-                <!-- 2. جاب الله اسماعيل -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1628217126479-40340123a918?auto=format&fit=crop&q=80&w=400" alt="جاب الله اسماعيل" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">13</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">جاب الله اسماعيل</div>
-                        <div class="player-pos">مدافع</div>
-                    </div>
-                </div>
-
-                <!-- 3. قوماري محمد -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&q=80&w=400" alt="قوماري محمد" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">04</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">قوماري محمد</div>
-                        <div class="player-pos">مدافع</div>
-                    </div>
-                </div>
-
-                <!-- 4. بن تركية محمد (القائد) -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=400" alt="بن تركية محمد" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">05</div>
-                        <div class="captain-badge"><i class="fa-solid fa-c"></i></div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">بن تركية محمد</div>
-                        <div class="player-pos">قائد ©</div>
-                    </div>
-                </div>
-
-                <!-- 5. شارف يونس -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=400" alt="شارف يونس" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">03</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">شارف يونس</div>
-                        <div class="player-pos">مدافع</div>
-                    </div>
-                </div>
-
-                <!-- 6. زكار صلاح -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=400" alt="زكار صلاح" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">06</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">زكار صلاح</div>
-                        <div class="player-pos">وسط</div>
-                    </div>
-                </div>
-
-                <!-- 7. ايت محمد الياس -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&q=80&w=400" alt="ايت محمد الياس" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">20</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">ايت محمد الياس</div>
-                        <div class="player-pos">وسط</div>
-                    </div>
-                </div>
-
-                <!-- 8. دنيدينة مصطفى -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1599586120429-482850b6d179?auto=format&fit=crop&q=80&w=400" alt="دنيدينة مصطفى" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">14</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">دنيدينة مصطفى</div>
-                        <div class="player-pos">وسط</div>
-                    </div>
-                </div>
-
-                <!-- 9. سالت اسلام -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1522778119026-d647f0566c5a?auto=format&fit=crop&q=80&w=400" alt="سالت اسلام" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">05</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">سالت اسلام</div>
-                        <div class="player-pos">وسط</div>
-                    </div>
-                </div>
-
-                <!-- 10. خذير محمد -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://z-cdn-media.chatglm.cn/files/a711e619-3796-4c20-a2b3-f1098c6f3b0d.jpg?auth_key=1869797745-00106b88bd8c4a27b42f3e94cf697444-0-e9ac4f4f86247e5b087e6261137349f1" alt="خذير محمد" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">11</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">خذير محمد</div>
-                        <div class="player-pos">مهاجم</div>
-                    </div>
-                </div>
-
-                <!-- 11. عبدوني سليم -->
-                <div class="player-card">
-                    <div class="card-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1558098263-73a83bab9b0c?auto=format&fit=crop&q=80&w=400" alt="عبدوني سليم" class="card-img">
-                        <div class="image-overlay"></div>
-                        <div class="player-number-badge">07</div>
-                    </div>
-                    <div class="player-body">
-                        <div class="player-name">عبدوني سليم</div>
-                        <div class="player-pos">مهاجم</div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- الاحتياط -->
-            <h3 class="reveal" style="text-align: center; font-size: 1.3rem; color: var(--text-dark); margin-bottom: 15px; font-weight: 800;">الاحتياطيون</h3>
-            <div class="subs-container reveal">
-                <div class="sub-item"><div class="sub-avatar">RI</div><div class="sub-name">رفيق ابراهيم</div></div>
-                <div class="sub-item"><div class="sub-avatar">CT</div><div class="sub-name">شنافي توفيق</div></div>
-                <div class="sub-item"><div class="sub-avatar">SK</div><div class="sub-name">سبع خيرالدين</div></div>
-                <div class="sub-item"><div class="sub-avatar">AA</div><div class="sub-name">عيدة عبدالحفيظ</div></div>
-                <div class="sub-item"><div class="sub-avatar">AZ</div><div class="sub-name">عسلي زكرياء</div></div>
-                <div class="sub-item"><div class="sub-avatar">SN</div><div class="sub-name">سعدات ناجي</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="matches-section" id="matches">
-        <div class="container">
-            <div class="section-title reveal">
-                <h2 style="color: #ffffff; border-color: var(--accent-gold);">الموعد القادم</h2>
-            </div>
-            <div class="match-card reveal">
-                <div class="match-date">
-                    <span class="day">25</span>
-                    <span class="month">أكتوبر</span>
-                </div>
-                <div class="match-teams">
-                    <div class="team">
-                        <img src="https://z-cdn-media.chatglm.cn/files/05a5ae9c-1675-4daa-8dd3-b152a08ff9bb.png?auth_key=1869795604-35aaf36f8dd94143af186940b4da6629-0-b0521b3a9dd61cabcb21fff45571a33d" alt="شعار MC HBB" class="team-logo-img">
-                        <div class="team-name">حاسي بحبح</div>
-                    </div>
-                    <div class="vs">VS</div>
-                    <div class="team">
-                        <img src="https://ui-avatars.com/api/?name=OPP&background=ffffff&color=006233&size=128" alt="الضيف" class="team-logo-img">
-                        <div class="team-name">المنافس</div>
-                    </div>
-                </div>
-                <div class="match-info">
-                    <p><i class="fa-regular fa-clock"></i> 16:00 مساءً</p>
-                    <p><i class="fa-solid fa-location-dot"></i> ملعب بلدية حاسي بحبح</p>
-                    <p><i class="fa-solid fa-trophy"></i> الدوري المحلي - الجولة 5</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-logo">
-                <i class="fa-solid fa-fan"></i> MC HBB <span>1992</span>
-            </div>
-            <div class="social-icons">
-                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-youtube"></i></a>
-            </div>
-            <div style="text-align: center; margin-top: 15px; font-size: 0.75rem; color: #555;">
-                جميع الحقوق محفوظة &copy; 2023 نادي مولودية حاسي بحبح
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-        }
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navLinks').classList.remove('active');
-            });
-        });
-        window.addEventListener('scroll', reveal);
-        function reveal() {
-            var reveals = document.querySelectorAll('.reveal');
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add('active');
-                }
-            }
-        }
-        reveal();
-    </script>
 </body>
 </html>
